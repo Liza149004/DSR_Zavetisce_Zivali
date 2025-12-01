@@ -35,7 +35,7 @@ CREATE TABLE Vrsta (
 
 CREATE TABLE Status (
     ID_status INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    vrstaStatusa ENUM('Aktiven', 'Neaktiven', 'Arhiviran', 'Potrjen', 'Zavrnjena', 'V_obravnavi') NOT NULL
+    vrstaStatusa VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Naslov (
@@ -61,11 +61,16 @@ CREATE TABLE Zival (
     ime VARCHAR(450) NOT NULL,
     opis MEDIUMTEXT,
     starost VARCHAR(45),
-    datumNajdbe DATE,
+    spol ENUM ('Samec', 'Samička') NOT NULL,
+    barvaKozuha VARCHAR(100) NOT NULL,
+    teza VARCHAR(45) NOT NULL,
+    cepljen BOOLEAN,
+    sterilizacija BOOLEAN,
+    datumNajdbe DATE NOT NULL,
     datumRojstva DATE,
     TK_vrsta INT NOT NULL,
     TK_status INT NOT NULL,
-    TK_zavetisce INT -- Dodan novi tuji ključ za Zavetisce
+    TK_zavetisce INT
 );
 
 CREATE TABLE Zavetisce (
@@ -74,8 +79,8 @@ CREATE TABLE Zavetisce (
     opis LONGTEXT,
     telefon VARCHAR(45),
     email VARCHAR(45),
-    delovniCas MEDIUMTEXT
-    -- Odstranjen je TK_zival
+    delovniCas MEDIUMTEXT,
+	TK_naslov INT NOT NULL
 );
 
 CREATE TABLE Povprasevanje (
@@ -107,6 +112,7 @@ SET FOREIGN_KEY_CHECKS=1;
 ALTER TABLE Naslov ADD CONSTRAINT Naslov_Posta FOREIGN KEY(TK_posta) REFERENCES Posta(ID_posta);
 ALTER TABLE Uporabnik ADD CONSTRAINT Uporabnik_TipUporabnika FOREIGN KEY(TK_tip_uporabnika) REFERENCES TipUporabnika(ID_tip_uporabnika);
 ALTER TABLE Uporabnik ADD CONSTRAINT Uporabnik_Naslov FOREIGN KEY(TK_naslov) REFERENCES Naslov(ID_naslov);
+ALTER TABLE Zavetisce ADD CONSTRAINT Zavetisce_Naslov FOREIGN KEY(TK_naslov) REFERENCES Naslov(ID_naslov);
 ALTER TABLE Zival ADD CONSTRAINT Zival_Vrsta FOREIGN KEY(TK_vrsta) REFERENCES Vrsta(ID_vrsta);
 ALTER TABLE Zival ADD CONSTRAINT Zival_Status FOREIGN KEY(TK_status) REFERENCES Status(ID_status);
 ALTER TABLE Zival ADD CONSTRAINT Zival_Zavetisce FOREIGN KEY(TK_zavetisce) REFERENCES Zavetisce(ID_zavetisce); -- Dodan novi tuji ključ v Zival
@@ -115,3 +121,26 @@ ALTER TABLE Povprasevanje ADD CONSTRAINT Povprasevanje_Zival FOREIGN KEY(TK_ziva
 ALTER TABLE Fotografija ADD CONSTRAINT Fotografija_Zival FOREIGN KEY(TK_zival) REFERENCES Zival(ID_zival);
 ALTER TABLE Porocilo ADD CONSTRAINT Porocilo_Uporabnik FOREIGN KEY(TK_uporabnik) REFERENCES Uporabnik(ID_uporabnik);
 ALTER TABLE Porocilo ADD CONSTRAINT Porocilo_Zavetisce FOREIGN KEY(TK_zavetisce) REFERENCES Zavetisce(ID_zavetisce);
+
+/*/////////////////////////////////////////////////////////////*/
+
+INSERT INTO Posta (posta, postnaSt) VALUES 
+('LJ', 1000); 
+
+INSERT INTO Naslov (ulica, hisnaSt, TK_posta) VALUES 
+('Cesta Pomoči', '12', 1);
+
+INSERT INTO Zavetisce (ime, opis, telefon, email, delovniCas, TK_naslov) VALUES 
+('Zavetišče ShelterCompass', 'Največje zavetišče v regiji, posvečeno reševanju in iskanju ljubečih domov za živali.', '+386 1 555 1234', 'info@sheltercompass.si', 'Ponedeljek - Petek: 9:00 - 16:00, Sobota: 9:00 - 12:00, Nedelja: Zaprto', 1);
+
+INSERT INTO Vrsta (imeVrste) VALUES 
+('Pes'),
+('Mačka'),
+('Ostalo');
+
+INSERT INTO Status (vrstaStatusa) VALUES 
+('Aktiven'),
+('Posvojen'),
+('V oskrbi'),
+('Rezerviran'),
+('Neaktiven');

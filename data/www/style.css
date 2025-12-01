@@ -1,0 +1,368 @@
+/* --- Splošni Stili in Barvna Shema --- */
+:root {
+    --green-dark: #27ae60;      /* Glavna temno zelena barva v nogi in glavi */
+    --green-light: #e8f5e9;     /* Svetlo zelena ozadja */
+    --text-color: #333;
+    --card-border: #eee;
+    --status-available: #4CAF50;
+    --status-adopted: #007bff;    
+    --status-incare: #ffc107;
+    --status-reserved: #2cac9f; 
+    --status-inactive: #ff0b07;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: var(--text-color);
+    min-width: 320px;
+}
+
+/* --- Glava (Header) --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background-color: #ffffff;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--green-dark);
+}
+
+.logo-text {
+    margin-left: 8px;
+}
+
+.mode-toggle {
+    cursor: pointer;
+    color: #888;
+}
+
+/* --- Sekcija Hero / Iskanje --- */
+.hero {
+    background-color: var(--green-light);
+    text-align: center;
+    padding: 50px 5%;
+}
+
+.hero h1 {
+    color: var(--green-dark);
+    font-size: 2.2em;
+    margin-bottom: 10px;
+}
+
+.tagline {
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.search-bar {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    border: 1px solid var(--card-border);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    padding: 5px 10px;
+    font-size: 1em;
+}
+
+.search-bar .material-icons {
+    color: #999;
+    margin-right: 10px;
+}
+
+/* --- Sekcija Filtri --- */
+.filters-container {
+    max-width: 90%;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.filters-header {
+    display: flex;
+    align-items: center;
+    color: var(--green-dark);
+    margin-bottom: 20px;
+}
+
+.filters-header .material-icons {
+    margin-right: 8px;
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    appearance: none; /* Odstrani privzeti stil */
+    background: white url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><path fill="gray" d="M7 10l5 5 5-5z"/></svg>') no-repeat right 10px center;
+    background-size: 16px;
+    cursor: pointer;
+}
+
+.showing-info {
+    margin-top: 25px;
+    font-weight: bold;
+    color: #777;
+}
+
+.animal-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 30px;
+    padding: 30px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.animal-card {
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+    position: relative;
+    cursor: pointer;
+    min-height: 325px; 
+}
+
+.animal-card:hover {
+    transform: translateY(-5px);
+}
+
+.image-placeholder {
+    width: 100%;
+    height: 250px;
+    background-color: #ddd;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.status-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.available {
+    background-color: var(--status-available);
+}
+
+.adopted {
+    background-color: var(--status-adopted);
+}
+
+.in-care {
+    background-color: var(--status-incare);
+}
+
+.inactive {
+    background-color: var(--status-inactive);
+}
+
+.reserved {
+    background-color: var(--status-reserved);
+}
+
+.card-details {
+    padding: 15px 20px;
+    position: relative;
+    min-height: 70px; 
+}
+
+.card-details h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.2em;
+}
+
+.card-details p {
+    margin: 0 0 3px 0;
+    color: #555;
+}
+
+.card-details .meta {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.animal-icon {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5em;
+    color: var(--green-dark);
+}
+
+
+/* --- Noga (Footer) --- */
+footer {
+    background-color: var(--green-dark);
+    color: white;
+    padding-top: 40px;
+    margin-top: 50px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    padding: 0 5%;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.contact-info, .location-map {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+}
+
+.contact-info h2, .location-map h2 {
+    font-size: 1.3em;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.contact-info p {
+    margin: 5px 0;
+}
+
+.location-map {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Simulacija zemljevida */
+.map-placeholder {
+    background-color: #b3e5fc; /* Svetlo modro ozadje zemljevida */
+    height: 200px;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.map-controls {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+}
+
+.map-controls button {
+    background: white;
+    border: 1px solid #ccc;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px;
+    cursor: default; /* Simulacija nedelovanja */
+    font-weight: bold;
+    font-size: 1.2em;
+    line-height: 1;
+    border-radius: 3px;
+    color: #555;
+}
+
+.map-footer-text {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 0.7em;
+    color: #333;
+    z-index: 10;
+}
+
+.copyright {
+    text-align: center;
+    padding: 15px;
+    border-top: 1px solid #388e3c; /* Temnejša zelena linija */
+    margin-top: 30px;
+    font-size: 0.9em;
+}
+
+/* Povezava, ki ovija kartico, mora izgledati kot kartica */
+.animal-card-link {
+    text-decoration: none; /* Odstrani podčrtaj */
+    color: inherit; /* Podeduje barvo teksta starša */
+    display: contents; /* Pomaga, da se grid postavi pravilno, kot da <a> ne obstaja */
+}
+
+/* Premaknemo transformacijo iz .animal-card na .animal-card-link, 
+   da deluje, ko kliknemo kjerkoli na kartici */
+.animal-card-link:hover .animal-card {
+    transform: translateY(-5px);
+}
+
+@media (max-width: 1024px) {
+    /* Za srednje velike zaslone (npr. iPad) nastavimo 2 stolpca */
+    .animal-gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    /* Za mobilne naprave nastavimo 1 stolpec */
+    .filters-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .animal-gallery {
+        grid-template-columns: 1fr; /* Samo en stolpec na mobilnih napravah */
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .contact-info p {
+        text-align: center;
+    }
+
+    .contact-info, .location-map {
+        min-width: 90%;
+    }
+}

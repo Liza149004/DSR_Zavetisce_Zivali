@@ -1,0 +1,273 @@
+:root {
+    --status-available: #4CAF50;
+    --status-adopted: #007bff;    
+    --status-incare: #ffc107;
+    --status-reserved: #2cac9f;
+    --status-inactive: #ff0b07;
+}
+
+.available {
+    background-color: var(--status-available);
+}
+
+.adopted {
+    background-color: var(--status-adopted);
+}
+
+.in-care {
+    background-color: var(--status-incare);
+}
+
+.inactive {
+    background-color: var(--status-inactive);
+}
+
+.unactive {
+    background-color: var(--status-reserved);
+}
+/* --- Glavna struktura profila --- */
+.profile-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 5%;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--green-dark, #388E3C);
+    font-weight: 500;
+    margin-bottom: 25px;
+}
+
+/* Postavitev glavne vsebine in stranskega stolpca (ki ga sedaj v tem dizajnu ne uporabljamo) */
+.profile-layout-grid {
+    display: grid;
+    grid-template-columns: 3fr 1fr; /* Leva vsebina širša (3/4), desni stolpec ožji (1/4) */
+    gap: 30px;
+}
+
+/* Sam profilna kartica - sedaj se uporablja samo za levo vsebino */
+.main-content-column {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 0; /* Odstranimo padding, da lahko slika gre do roba */
+}
+
+/* Postavitev slika/povpraševanje na vrhu (slika 1) */
+.image-sidebar-wrapper {
+    display: flex;
+    gap: 30px;
+    padding: 30px 30px 0 30px; /* Padding okoli elementov znotraj kartice */
+}
+
+.image-area {
+    flex: 2; /* Slika zavzame 2/3 prostora */
+    height: 450px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Skupina za QR in Povpraševanje (na desni) */
+.sidebar-on-image-row {
+    flex: 1; /* Stranski stolpec zavzame 1/3 prostora */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #eee; /* Dodamo rahlo obrobo */
+}
+
+.inquiry-box {
+    background-color: var(--green-light-bg, #EAF8EB);
+    border: none;
+    padding: 25px 20px;
+}
+
+.inquiry-button {
+    background-color: var(--status-available, #4CAF50);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    width: 100%;
+}
+
+.qr-code {
+    width: 120px;
+    height: 120px;
+    margin: 10px auto;
+    display: block;
+}
+
+/* Glavni podatki (pod sliko) */
+.profile-data-box {
+    padding: 30px;
+}
+
+/* --- Ime in Status --- */
+.name-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.name-status-row h1 {
+    font-size: 2.2em;
+    margin: 0;
+    color: var(--text-color, #333);
+    display: flex;
+    align-items: center;
+}
+
+.name-status-row h1 .material-icons {
+    margin-left: 10px;
+}
+
+.name-status-row .status-badge {
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9em;
+    background-color: var(--status-available, #4CAF50);
+    color: white;
+    /* Damo fiksno širino, da se ne premika ob daljšem besedilu */
+    min-width: 180px; 
+    text-align: center;
+}
+
+.type-info {
+    font-size: 1.1em;
+    color: #777;
+    margin: 0;
+}
+
+/* --- Mreža metrik (detajli živali) --- */
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.meta-item {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Ikona + Besedilo */
+    grid-template-rows: auto auto; /* Vrednost zgoraj, Labela spodaj */
+    align-items: center;
+    background-color: var(--green-light-bg, #EAF8EB); 
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: var(--text-color, #333);
+}
+
+.meta-item .material-icons {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    margin-right: 15px;
+    font-size: 2em;
+    color: var(--green-dark, #388E3C);
+}
+
+.meta-item .meta-value {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.meta-item .meta-label {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    margin: 0;
+    font-size: 0.85em;
+    color: #777;
+}
+
+/* --- Zdravstveni status --- */
+h2 {
+    font-size: 1.5em;
+    color: var(--text-color, #333);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.health-badges-wrapper {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.health-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    min-width: 180px;
+    justify-content: flex-start;
+}
+
+.health-badge .material-icons {
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+
+.health-badge.checked {
+    background-color: var(--green-light-bg, #EAF8EB);
+    color: var(--green-dark, #388E3C);
+    border-color: var(--green-main, #4CAF50);
+}
+
+.health-badge.checked .material-icons {
+    color: var(--green-main, #4CAF50);
+}
+
+.health-badge.unchecked {
+    background-color: #fcebeb; /* Svetlo rdeča */
+    color: #d32f2f; /* Temno rdeča */
+    border-color: #f44336;
+}
+
+.health-badge.unchecked .material-icons {
+    color: #f44336;
+}
+
+/* --- Odzivnost --- */
+@media (max-width: 900px) {
+    .image-sidebar-wrapper {
+        flex-direction: column;
+        padding: 20px 20px 0 20px;
+    }
+    .image-area {
+        height: 300px;
+    }
+    .profile-layout-grid {
+        grid-template-columns: 1fr;
+    }
+    .profile-data-box {
+        padding: 20px;
+    }
+    .meta-grid {
+        grid-template-columns: 1fr;
+    }
+}
