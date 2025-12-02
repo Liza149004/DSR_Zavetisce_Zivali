@@ -29,7 +29,7 @@
 
     <main>
         <section class="hero">
-            <h1>Poišči Svojega Popolnega Spremljevalca</h1>
+            <h1>Poišči svojega popolnega spremljevalca</h1>
             <p class="tagline">Vsaka žival si zasluži ljubeč dom. Prebrskajte po naših živalih in pomagajte spremeniti njihova življenja.</p>
             <div class="search-bar">
                 <span class="material-icons">search</span>
@@ -152,6 +152,37 @@
         }
         ?>
     </section>
+
+        <script>
+            const toggleButton = document.getElementById('darkModeToggle');
+            const body = document.body;
+            const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+
+            // 1. Nastavi stanje ob nalaganju strani
+            if (isDarkMode) {
+                body.classList.add('dark-mode');
+                // Spremeni ikono, če jo želite
+                toggleButton.textContent = 'light_mode'; 
+            }
+
+            // 2. Definira funkcijo preklopa
+            function toggleDarkMode() {
+                body.classList.toggle('dark-mode');
+
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('darkMode', 'enabled');
+                    toggleButton.textContent = 'light_mode'; // Sonce
+                } else {
+                    localStorage.setItem('darkMode', 'disabled');
+                    toggleButton.textContent = 'dark_mode'; // Luna
+                }
+            }
+
+            // 3. Dodaj poslušalca dogodkov na gumb
+            if (toggleButton) {
+                toggleButton.addEventListener('click', toggleDarkMode);
+            }
+        </script>
     </main>
             
     <?php include 'footer.php';?>

@@ -19,14 +19,16 @@
         
         <div class="location-map">
             <h2>Naša Lokacija</h2>
-            <div class="map-placeholder">
-                <div class="map-controls">
-                    <button>+</button>
-                    <button>−</button>
-                </div>
-                <div class="map-footer-text">
-                    Prijavi težavo | &copy; OpenStreetMap contributors
-                </div>
+            <div class="map-container">
+                <iframe 
+                    src="https://maps.google.com/maps?q=123+Shelter+Lane,+Springfield,+ST+12345&output=embed" 
+                    width="100%" 
+                    height="300" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
             </div>
         </div>
     </div>

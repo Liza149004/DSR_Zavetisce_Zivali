@@ -12,6 +12,14 @@
             // Vključi glavo (header.php) - ta že vključuje db_connect.php in $pdo
             include 'header.php'; 
 
+            if (isset($_GET['status']) && isset($_GET['message'])) {
+                $status_class = ($_GET['status'] === 'success') ? 'success' : 'error';
+                $message = htmlspecialchars($_GET['message']);
+                
+                // Prikaz opozorilne/uspešne vrstice
+                echo "<div class='alert-message $status_class'>$message</div>";
+            }
+
             // 1. Preverimo, ali je ID živali prisoten in veljaven
             $animal_id = $_GET['id'] ?? null;
             $animal = null;
@@ -65,18 +73,32 @@
                     $animal = null;
                 }
                 
-            }
+            }    
 
-            $vrsta_emoji = ($animal['vrsta'] ?? '') === 'Mačka' ? '🐱' : '🐾';
-            ?>
+            $vrsta_emoji = ($animal['vrsta'] ?? '') === 'Mačka' ? '🐱' : '🐾';?>
 
             <div class="profile-container">
                 <a href="index.php" class="back-link">
                     <span class="material-icons">arrow_back</span> Nazaj na galerijo
                 </a>
+                
+                <?php if ($animal):
+                  
+                    // --- DODANA LOGIKA ZA DOLOČANJE BARVNEGA RAZREDA GLEDE NA STATUS ---
+                    $status_raw = $animal['status'] ?? 'Neznano';
+                    $status_lower = strtolower(trim($status_raw));
+                    $status_class = 'in-care'; // Privzeta vrednost
 
-                <?php if ($animal): ?>
-                    
+                    if ($status_lower === 'aktiven') {
+                        $status_class = 'available';
+                    } elseif ($status_lower === 'posvojen') {
+                        $status_class = 'adopted';
+                    } elseif ($status_lower === 'rezerviran') {
+                        $status_class = 'reserved';
+                    } elseif ($status_lower === 'neaktiven') {
+                        $status_class = 'inactive';
+                    }
+                ?>
                     <div class="profile-layout-grid">
                         
                         <div class="main-content-column">
@@ -84,7 +106,7 @@
                             <div class="image-sidebar-wrapper">
                                 <div class="image-area" style="background-image: url('<?php echo htmlspecialchars($animal['pot_do_slike'] ?? 'images/placeholder.jpg'); ?>');">
                                     <div class="status-badge-wrapper">
-                                        <span class="status-badge status-<?php echo strtolower(str_replace(' ', '-', $animal['status'] ?? '')); ?>">
+                                        <span class="status-badge status-<?php echo htmlspecialchars($status_class); ?>">
                                             <?php echo htmlspecialchars($animal['status'] ?? 'Neznano'); ?>
                                         </span>
                                     </div>
@@ -100,7 +122,7 @@
                                     <div class="sidebar-card inquiry-box">
                                         <h4>Zanima vas <?php echo htmlspecialchars($animal['ime_zivali']); ?>?</h4>
                                         <p>Oddajte povpraševanje in naša ekipa vas bo kontaktirala v 24 urah.</p>
-                                        <button class="inquiry-button">Oddaj povpraševanje</button>
+                                        <button class="inquiry-button" onclick="openModal()">Oddaj povpraševanje</button>
                                     </div>
                                 </div>
                             </div>
@@ -109,9 +131,7 @@
 
                                 <div class="name-status-row">
                                     <h1><?php echo htmlspecialchars($animal['ime_zivali']); ?> <?php echo $vrsta_emoji; ?></h1>
-                                    <span class="status-badge status-<?php echo strtolower(str_replace(' ', '-', $animal['status'] ?? '')); ?>">
-                                        <?php echo ($animal['status'] ?? '') === 'Aktiven' ? 'Na voljo za posvojitev' : htmlspecialchars($animal['status'] ?? 'Neznano'); ?>
-                                    </span>
+
                                 </div>
 
                                 <p class="type-info"><?php echo htmlspecialchars($animal['vrsta'] ?? 'Neznana vrsta'); ?></p>
@@ -160,6 +180,86 @@
                     <p class="error-message">Žival s tem ID-jem ni bila najdena ali ID ni veljaven.</p>
                 <?php endif; ?>
             </div>
+
+            <div id="inquiryModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Povpraševanje za posvojitev</h2>
+                        <p>Za <?php echo htmlspecialchars($animal['ime_zivali'] ?? 'Unknown Animal'); ?></p>
+                        <span class="close-button" onclick="closeModal()">&times;</span>
+                    </div>
+                    <form id="inquiryForm" action="oddaja_povprasevanja.php" method="POST">
+                        <input type="hidden" name="animal_id" value="<?php echo htmlspecialchars($animal_id); ?>">
+                        <input type="hidden" name="user_id" value="1"> <div class="form-group">
+                            <label for="fullName">Ime in priimek <span class="required">*</span></label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="petExperience">Izkušnje in bivalni pogoji hišnih ljubljenčkov <span class="required">*</span></label>
+                            <textarea id="petExperience" name="petExperience" rows="4" required placeholder="Povejte nam o svojih izkušnjah s hišnimi ljubljenčki in o svojih življenjskih razmerah ..."></textarea>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="cancel-button" onclick="closeModal()">Preklic</button>
+                            <button type="submit" class="submit-button">Oddaj povpraševanje</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <script>
+                // Funkcije za odpiranje in zapiranje modala
+                function openModal() {
+                    document.getElementById('inquiryModal').style.display = 'block';
+                }
+
+                function closeModal() {
+                    document.getElementById('inquiryModal').style.display = 'none';
+                }
+
+                // Zapiranje modala s klikom zunaj okna
+                window.onclick = function(event) {
+                    const modal = document.getElementById('inquiryModal');
+                    if (event.target == modal) {
+                        closeModal();
+                    }
+                }
+
+                const toggleButton = document.getElementById('darkModeToggle');
+                const body = document.body;
+                const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
+
+                // 1. Nastavi stanje ob nalaganju strani
+                if (isDarkMode) {
+                    body.classList.add('dark-mode');
+                    // Spremeni ikono, če jo želite
+                    toggleButton.textContent = 'light_mode'; 
+                }
+
+                // 2. Definira funkcijo preklopa
+                function toggleDarkMode() {
+                    body.classList.toggle('dark-mode');
+
+                    if (body.classList.contains('dark-mode')) {
+                        localStorage.setItem('darkMode', 'enabled');
+                        toggleButton.textContent = 'light_mode'; // Sonce
+                    } else {
+                        localStorage.setItem('darkMode', 'disabled');
+                        toggleButton.textContent = 'dark_mode'; // Luna
+                    }
+                }
+
+                // 3. Dodaj poslušalca dogodkov na gumb
+                if (toggleButton) {
+                    toggleButton.addEventListener('click', toggleDarkMode);
+                }
+            </script>
 
             <?php include 'footer.php'; ?>
         </body>

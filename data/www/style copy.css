@@ -1,4 +1,8 @@
 :root {
+    --green-dark: #27ae60;      /* Glavna temno zelena barva v nogi in glavi */
+    --green-light: #e8f5e9;     /* Svetlo zelena ozadja */
+    --text-color: #333;
+    --card-border: #eee;
     --status-available: #4CAF50;
     --status-adopted: #007bff;    
     --status-incare: #ffc107;
@@ -39,6 +43,9 @@
     color: var(--green-dark, #388E3C);
     font-weight: 500;
     margin-bottom: 25px;
+}
+.main {
+    background-color: var(--green-light);
 }
 
 /* Postavitev glavne vsebine in stranskega stolpca (ki ga sedaj v tem dizajnu ne uporabljamo) */
@@ -270,4 +277,294 @@ h2 {
     .meta-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.modal {
+    display: none; /* Skrijemo modal privzeto */
+    position: fixed; 
+    z-index: 1000; /* Zagotovimo, da je na vrhu */
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); /* Zatemnjeno ozadje */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; /* Postavitev na sredino zgoraj */
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%; 
+    max-width: 600px; /* Omejitev širine */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.modal-header p {
+    color: #6c757d;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Form Styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box; /* Ključno za padding! */
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.required {
+    color: #dc3545; /* Rdeča zvezdica */
+    font-weight: normal;
+}
+
+/* Footer in Gumbi */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end; /* Poravnava gumbov na desno */
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+.cancel-button {
+    background-color: white;
+    color: #495057;
+    border: 1px solid #ced4da;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.submit-button {
+    background-color: var(--status-available, #4CAF50);    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+:root {
+    --dark-bg: #101d1d;
+    --dark-surface: #212d2b;
+    --dark-text: #eeeeee;
+    --dark-text-secondary: #e8f5e9;
+    --dark-card-border: #5a5a5a;
+    --dark-header-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4); /* Dodan box-shadow za glavo */
+    --dark-link: #27ae60; /* Nežna zeleno-siva za povezave */
+    --dark-hover-bg: #2a3836; /* Za elemente ob lebdenju */
+    --dark-button-primary: #27ae60; /* Barva gumba za oddajo povpraševanja */
+    --dark-button-primary-hover: #1d7b44;
+}
+
+/* 1. GLOBALNI TEMNI NAČIN */
+body.dark-mode {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
+
+/* Povezave */
+body.dark-mode a {
+    color: var(--dark-link);
+}
+
+body.dark-mode a:hover {
+    color: var(--dark-text-secondary);
+}
+
+/* 2. GLAVA/NOGA IN KARTICE */
+body.dark-mode .main-header,
+body.dark-mode footer,
+body.dark-mode .animal-card,
+body.dark-mode .modal-content,
+body.dark-mode .sidebar-card,
+body.dark-mode .profile-data-box,
+body.dark-mode .share-profile-box,
+body.dark-mode .inquiry-box {
+    background-color: var(--dark-surface);
+    color: var(--dark-text);
+    border: 1px solid var(--dark-card-border); /* Uporabi spremenljivko */
+    box-shadow: none; /* Odstrani morebitne svetle sence */
+}
+
+body.dark-mode .main-content-column {
+    background-color: #323e3c;
+}
+
+
+/* 3. HERO in OSTALI TEXT */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode .tagline,
+body.dark-mode .type-info,
+body.dark-mode .meta-label,
+body.dark-mode .description { /* Dodani elementi */
+    color: var(--dark-text);
+}
+
+/* 4. FILTRI IN ISKALNA VRSTICA */
+body.dark-mode .search-bar,
+body.dark-mode .filter-group select,
+body.dark-mode .filters-container {
+    background-color: var(--dark-surface);
+    border: 1px solid var(--dark-card-border);
+    color: var(--dark-text);
+}
+
+body.dark-mode .search-bar input {
+    background-color: transparent;
+    color: var(--dark-text);
+}
+
+/* 5. METRIKE IN ZELENI BLOKI (EAF8EB) */
+body.dark-mode .meta-item {
+    /* Uporaba dark-surface za ozadje elementa */
+    background-color: var(--dark-surface); 
+    border: 1px solid var(--dark-card-border); 
+}
+
+/* ZDRAVSTVENI ZNAKI (Health Badges) */
+body.dark-mode .health-badge.checked {
+    background-color: #263c26;
+    border-color: #264b27;
+    color: var(--dark-text);
+}
+
+body.dark-mode .health-badge.unchecked {
+    background-color: #4a3434; /* Temnejša rdeča/siva za nepreverjeno */
+    border-color: #775555;
+    color: var(--dark-text);
+}
+body.dark-mode .meta-value {
+    background-color: var(--dark-surface);
+    color: #ffffff;
+}
+
+/* 6. MODAL (Obrazec) */
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea {
+    background-color: #334444; /* Malo temnejša od dark-surface za vnosna polja */
+    border: 1px solid #777;
+    border-radius: 6px;
+    color: var(--dark-text);
+}
+
+body.dark-mode .modal-footer {
+    border-top-color: #777;
+}
+
+/* 7. PREKLICNI GUMB v Modalu */
+body.dark-mode .cancel-button {
+    background-color: #4a5d5d; /* Temnejša siva/zelena za preklic */
+    color: var(--dark-text);
+    border: 1px solid #777;
+}
+
+body.dark-mode .cancel-button:hover {
+    background-color: #5d6d6d;
+}
+
+/* Gumb za oddajo povpraševanja v Modalu */
+body.dark-mode .submit-button {
+    background-color: var(--dark-button-primary); 
+    color: var(--dark-text-secondary);
+}
+
+body.dark-mode .submit-button:hover {
+    background-color: var(--dark-button-primary-hover);
+}
+
+/* DODATNO za stran profila */
+/* 2. GLAVA (Header) */
+body.dark-mode header,
+body.dark-mode .main-header { /* Dvojni zapis za zagotovitev, da prevlada */
+    background-color: var(--dark-surface);
+    box-shadow: var(--dark-header-box-shadow);
+}
+body.dark-mode .hero {
+    background-color: #101d1d; /* Temnejša, a še vedno prepoznavna zelena */
+}
+
+/* Povezava Nazaj na galerijo */
+body.dark-mode .back-link {
+    color: var(--dark-link);
+}
+body.dark-mode .back-link:hover {
+    background-color: var(--dark-hover-bg);
+}
+
+/* Slika območja - ne potrebuje bg barve, ker je slika */
+body.dark-mode .image-area {
+    border: 1px solid var(--dark-card-border);
+}
+
+
+
+/* Gumb za oddajo povpraševanja v stranski vrstici */
+body.dark-mode .inquiry-button {
+    background-color: var(--dark-button-primary);
+    color: var(--dark-text);
+    border: none;
+}
+body.dark-mode .inquiry-button:hover {
+    background-color: var(--dark-button-primary-hover);
+}
+
+/* Sidebar območja (delitev v 2 stolpca na manjših zaslonih) */
+body.dark-mode .sidebar-on-image-row {
+    background-color: #323e3c; /* Ozadje med karticami */
 }

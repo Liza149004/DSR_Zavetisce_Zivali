@@ -4,6 +4,9 @@
     --green-light: #e8f5e9;     /* Svetlo zelena ozadja */
     --text-color: #333;
     --card-border: #eee;
+    --background-color: #f4f7f6; /* Ozadje celotne strani */
+    --surface-color: #ffffff; /* Barva kartic, modala */
+    --text-secondary: #333;
     --status-available: #4CAF50;
     --status-adopted: #007bff;    
     --status-incare: #ffc107;
@@ -28,6 +31,10 @@ header {
     padding: 15px 5%;
     background-color: #ffffff;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.main {
+    background-color: var(--green-light);
 }
 
 .logo {
@@ -117,7 +124,8 @@ header {
     gap: 20px;
 }
 
-.filter-group label {
+.filter-group label,
+.filter-group select {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
@@ -238,8 +246,7 @@ header {
 
 /* --- Noga (Footer) --- */
 footer {
-    background-color: var(--green-dark);
-    color: white;
+    background-color: var(--green-light);
     padding-top: 40px;
     margin-top: 50px;
 }
@@ -365,4 +372,97 @@ footer {
     .contact-info, .location-map {
         min-width: 90%;
     }
+}
+:root {
+    --dark-bg: #101d1d;
+    --dark-surface: #212d2b;
+    --dark-text: #eeeeee;
+    --dark-text-secondary: #e8f5e9;
+    --dark-card-border: #5a5a5a;
+}
+
+/* 1. GLOBALNI TEMNI NAČIN */
+body.dark-mode {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
+
+/* 2. GLAVA/NOGA IN KARTICE */
+body.dark-mode .main-header,
+body.dark-mode footer,
+body.dark-mode .animal-card,
+body.dark-mode .modal-content,
+body.dark-mode .sidebar-card {
+    background-color: var(--dark-surface);
+    color: var(--dark-text);
+    border-color: var(--dark-card-border);
+}
+
+/* 3. HERO in OSTALI TEXT */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode .type-info {
+    color: var(--dark-text);
+}
+
+body.dark-mode .tagline {
+    color: var(--dark-text);
+    background-color: var(--dark-bg);
+}
+
+/* 4. FILTRI IN ISKALNA VRSTICA */
+body.dark-mode .search-bar,
+body.dark-mode .filter-group select,
+body.dark-mode .filters-container {
+    background-color: var(--dark-surface);
+    border: 1px solid var(--dark-card-border);
+    color: var(--dark-text);
+}
+
+body.dark-mode .search-bar input {
+    background-color: transparent;
+    color: var(--dark-text);
+}
+
+/* 5. METRIKE IN ZELENI BLOKI (EAF8EB) */
+body.dark-mode .meta-item {
+    background-color: #212d2b; /* Temnejša siva/zelena za ozadje */
+    border-color: #777;
+
+}
+
+body.dark-mode p,
+body.dark-mode .meta,
+body.dark-mode .filter-group label {
+    background-color: var(--dark-surface);
+    color: #d8d8d8;
+}
+
+/* 6. MODAL (Obrazec) */
+body.dark-mode .form-group input,
+body.dark-mode .form-group textarea {
+    background-color: #212d2b;
+    border-color: #777;
+    color: var(--dark-text);
+}
+
+body.dark-mode .modal-footer {
+    border-top-color: #777;
+}
+
+/* 7. PREKLICNI GUMB v Modalu */
+body.dark-mode .cancel-button {
+    background-color: #333;
+    color: var(--dark-text);
+    border-color: #555;
+}
+/* 2. GLAVA (Header) */
+body.dark-mode header {
+    background-color: var(--dark-surface);
+    box-shadow: var(--dark-header-box-shadow);
+}
+body.dark-mode .hero {
+    background-color: #101d1d; /* Temnejša, a še vedno prepoznavna zelena */
 }

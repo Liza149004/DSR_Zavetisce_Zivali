@@ -10,10 +10,16 @@
 <body>
 <header>
     <div class="logo">
-        <span class="material-icons" style="color: #4CAF50;">favorite</span>
+        <span class="material-icons" style="color: #27ae60;">favorite</span>
         <span class="logo-text">ShelterCompass</span>
     </div>
-    <span class="material-icons mode-toggle">dark_mode</span>
+   <div class="header-actions">
+        <!-- KLJUČNI ELEMENT: Ikona za Dark Mode -->
+        <!-- Začetna ikona je 'dark_mode' (Luna), ki jo JavaScript spremeni v 'light_mode' (Sonce) v temnem načinu -->
+        <span id="darkModeToggle" class="material-icons mode-toggle">
+            dark_mode
+        </span>
+    </div>
 </header>
 </body>
 </html>
