@@ -106,7 +106,7 @@
                             <div class="image-sidebar-wrapper">
                                 <div class="image-area" style="background-image: url('<?php echo htmlspecialchars($animal['pot_do_slike'] ?? 'images/placeholder.jpg'); ?>');">
                                     <div class="status-badge-wrapper">
-                                        <span class="status-badge status-<?php echo htmlspecialchars($status_class); ?>">
+                                        <span class="status-badge <?php echo htmlspecialchars($status_class); ?>">
                                             <?php echo htmlspecialchars($animal['status'] ?? 'Neznano'); ?>
                                         </span>
                                     </div>
@@ -121,8 +121,40 @@
                                     
                                     <div class="sidebar-card inquiry-box">
                                         <h4>Zanima vas <?php echo htmlspecialchars($animal['ime_zivali']); ?>?</h4>
+                                        
+                                        <?php 
+                                        // Priprava logike za gumb in disclaimer
+                                        $can_inquire = true;
+                                        $disclaimer = "";
+                                        $button_text = "Oddaj povpraševanje";
+
+                                        // Preverjamo status (uporabimo že pripravljeno spremenljivko $status_lower)
+                                        if ($status_lower === 'posvojen' || $status_lower === 'neaktiven') {
+                                            $can_inquire = false;
+                                            $button_text = "Ni več na voljo";
+                                        } elseif ($status_lower === 'v oskrbi') {
+                                            $disclaimer = "Žival je trenutno še v oskrbi pri testni družini, vendar že sprejemamo povpraševanja.";
+                                        } elseif ($status_lower === 'rezerviran') {
+                                            $disclaimer = "Za to žival je že bil izbran potencialni posvojitelj, vendar nas lahko še vedno kontaktirate.";
+                                        }
+                                        ?>
+
+                                        <?php if ($disclaimer !== ""): ?>
+                                            <div class="status-disclaimer" style="background: rgba(255,193,7,0.1); border-left: 4px solid #ffc107; padding: 10px; margin-bottom: 15px; font-size: 0.9rem; display: flex; align-items: flex-start; gap: 8px;">
+                                                <span class="material-icons" style="color: #ffc107; font-size: 1.2rem;">info</span>
+                                                <span><?php echo $disclaimer; ?></span>
+                                            </div>
+                                        <?php endif; ?>
+
                                         <p>Oddajte povpraševanje in naša ekipa vas bo kontaktirala v 24 urah.</p>
-                                        <button class="inquiry-button" onclick="openModal()">Oddaj povpraševanje</button>
+
+                                        <?php if ($can_inquire): ?>
+                                            <button class="inquiry-button" onclick="openModal()"><?php echo $button_text; ?></button>
+                                        <?php else: ?>
+                                            <button class="inquiry-button" style="background-color: #ccc; cursor: not-allowed;" disabled>
+                                                <?php echo $button_text; ?>
+                                            </button>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -171,9 +203,6 @@
                                 </p>
                             </div>
                         </div>
-                        
-                        <div class="sidebar-column">
-                            </div>
                     </div>
                     
                 <?php else: ?>
@@ -202,7 +231,7 @@
 
                         <div class="form-group">
                             <label for="petExperience">Izkušnje in bivalni pogoji hišnih ljubljenčkov <span class="required">*</span></label>
-                            <textarea id="petExperience" name="petExperience" rows="4" required placeholder="Povejte nam o svojih izkušnjah s hišnimi ljubljenčki in o svojih življenjskih razmerah ..."></textarea>
+                            <textarea id="message" name="sporocilo" rows="4" required placeholder="Povejte nam o svojih izkušnjah s hišnimi ljubljenčki in o svojih življenjskih razmerah ..."></textarea>
                         </div>
 
                         <div class="modal-footer">

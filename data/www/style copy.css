@@ -29,6 +29,20 @@
 .unactive {
     background-color: var(--status-reserved);
 }
+
+/* Stil za opozorilo v profilu */
+.status-disclaimer {
+    border-radius: 4px;
+    color: var(--text-color);
+    line-height: 1.4;
+}
+
+/* Onemogočen gumb */
+.inquiry-button:disabled {
+    background: #a0a0a0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
 /* --- Glavna struktura profila --- */
 .profile-container {
     max-width: 1200px;
@@ -430,12 +444,12 @@ body.dark-mode footer,
 body.dark-mode .animal-card,
 body.dark-mode .modal-content,
 body.dark-mode .sidebar-card,
-body.dark-mode .profile-data-box,
 body.dark-mode .share-profile-box,
 body.dark-mode .inquiry-box {
     background-color: var(--dark-surface);
     color: var(--dark-text);
     border: 1px solid var(--dark-card-border); /* Uporabi spremenljivko */
+    border-radius: 12px;
     box-shadow: none; /* Odstrani morebitne svetle sence */
 }
 
@@ -443,7 +457,10 @@ body.dark-mode .main-content-column {
     background-color: #323e3c;
 }
 
-
+body.dark-mode .description,
+body.dark-mode .type-info{
+    background-color: #323e3c;
+}
 /* 3. HERO in OSTALI TEXT */
 body.dark-mode h1,
 body.dark-mode h2,
@@ -451,8 +468,7 @@ body.dark-mode h3,
 body.dark-mode h4,
 body.dark-mode .tagline,
 body.dark-mode .type-info,
-body.dark-mode .meta-label,
-body.dark-mode .description { /* Dodani elementi */
+body.dark-mode .meta-label { /* Dodani elementi */
     color: var(--dark-text);
 }
 

@@ -14,7 +14,7 @@
             <p>123 Shelter Lane</p>
             <p>Springfield, ST 12345</p>
             <p>Telefon: (555) 123-4567</p>
-            <p>E-mail: info@sheltercompass.org</p>
+            <p>E-mail: info.sheltercompass@gmail.com</p>
         </div>
         
         <div class="location-map">
@@ -34,7 +34,7 @@
     </div>
 
     <div class="copyright">
-        <p>&copy; <?php echo date("Y"); ?> ShelterCompass. Vse pravice pridržane.</p>
+        <p>&copy; <?php echo date("Y"); ?> ShelterCompass. Vse pravice pridržane. | <a href="admin_login.php" style="color: gray; font-size: 0.8em;">Admin vstop</a></p>
     </div>
 </footer>
 

@@ -397,7 +397,9 @@ body.dark-mode .sidebar-card {
     color: var(--dark-text);
     border-color: var(--dark-card-border);
 }
-
+body.dark-mode .description{
+    background-color: #323e3c;
+}
 /* 3. HERO in OSTALI TEXT */
 body.dark-mode h1,
 body.dark-mode h2,
