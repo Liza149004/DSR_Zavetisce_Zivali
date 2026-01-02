@@ -12,11 +12,28 @@ if (!isset($_SESSION['admin_id'])) {
 require 'db_connect.php';
 
 // Brisanje živali
+// Brisanje živali
 if (isset($_GET['izbrisi'])) {
     $id = $_GET['izbrisi'];
-    $pdo->prepare("DELETE FROM Zival WHERE ID_zival = ?")->execute([$id]);
-    header("Location: uredi_zivali_seznam.php");
-    exit();
+    
+    try {
+        $pdo->beginTransaction();
+
+        // 1. Najprej izbrišemo zapise v tabeli Fotografija, ki so povezani s to živaljo
+        $stmtFoto = $pdo->prepare("DELETE FROM Fotografija WHERE TK_zival = ?");
+        $stmtFoto->execute([$id]);
+
+        // 2. Zdaj lahko varno izbrišemo žival
+        $stmtZival = $pdo->prepare("DELETE FROM Zival WHERE ID_zival = ?");
+        $stmtZival->execute([$id]);
+
+        $pdo->commit();
+        header("Location: uredi_zivali_seznam.php?uspeh=1");
+        exit();
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        die("Napaka pri brisanju: " . $e->getMessage());
+    }
 }
 
 $zivali = $pdo->query("SELECT Z.*, V.imeVrste as vrsta, S.vrstaStatusa as status 

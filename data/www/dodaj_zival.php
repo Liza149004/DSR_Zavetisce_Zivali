@@ -1,9 +1,8 @@
 <?php
-header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
-header("Pragma: no-cache"); // HTTP 1.0.
-header("Expires: 0"); // Proxy strežniki
+header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
 
-// 2. Preveri sejo
 session_start();
 if (!isset($_SESSION['admin_id'])) {
     header("Location: admin_login.php");
@@ -22,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $ime = $_POST['ime'];
     $opis = $_POST['opis'];
     $starost = $_POST['starost'];
+    $datum_rojstva = $_POST['datum_rojstva']; // Novo polje
     $spol = $_POST['spol'];
     $barva = $_POST['barva'];
     $teza = $_POST['teza'];
@@ -33,18 +33,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Logika za nalaganje slike
     if (isset($_FILES['slika']) && $_FILES['slika']['error'] == 0) {
-        $ime_datoteke = time() . "_" . $_FILES['slika']['name']; // Unikatno ime
+        // Uporabimo originalno ime, kot si želela
+        $ime_datoteke = $_FILES['slika']['name']; 
         $pot_za_shranjevanje = "slike/" . $ime_datoteke;
 
         if (move_uploaded_file($_FILES['slika']['tmp_name'], $pot_za_shranjevanje)) {
             try {
                 $pdo->beginTransaction();
 
-                // 1. Vstavimo žival
-                $sql_zival = "INSERT INTO Zival (ime, opis, starost, spol, barvaKozuha, teza, cepljen, sterilizacija, datumNajdbe, TK_vrsta, TK_status, TK_zavetisce) 
-                              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
+                // 1. Vstavimo žival (z vključenim datumom rojstva)
+                $sql_zival = "INSERT INTO Zival (ime, opis, starost, datumRojstva, spol, barvaKozuha, teza, cepljen, sterilizacija, datumNajdbe, TK_vrsta, TK_status, TK_zavetisce) 
+                              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
                 $stmt = $pdo->prepare($sql_zival);
-                $stmt->execute([$ime, $opis, $starost, $spol, $barva, $teza, $cepljen, $steriliziran, $datum_najdbe, $vrsta_id, $status_id]);
+                $stmt->execute([
+                    $ime, $opis, $starost, $datum_rojstva, $spol, $barva, 
+                    $teza, $cepljen, $steriliziran, $datum_najdbe, $vrsta_id, $status_id
+                ]);
                 
                 $zadnja_id_zival = $pdo->lastInsertId();
 
@@ -53,16 +57,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $pdo->prepare($sql_foto)->execute([$pot_za_shranjevanje, $zadnja_id_zival]);
 
                 $pdo->commit();
-                $uspeh = "Žival $ime je bila uspešno dodana!";
+                $uspeh = "Žival $ime je bila uspešno dodana z originalno sliko!";
             } catch (Exception $e) {
                 $pdo->rollBack();
-                $napaka = "Napaka pri shranjevanju: " . $e->getMessage();
+                $napaka = "Napaka pri shranjevanju v bazo: " . $e->getMessage();
             }
         } else {
-            $napaka = "Napaka pri prenosu slike na strežnik.";
+            $napaka = "Napaka: Datoteke ni bilo mogoče premakniti v mapo 'slike/'. Preveri pravice mape.";
         }
     } else {
-        $napaka = "Prosimo, naložite sliko živali.";
+        $napaka = "Prosimo, naložite sliko živali ali preverite velikost datoteke.";
     }
 }
 ?>
@@ -76,85 +80,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
-        .form-container { 
-            max-width: 600px; 
-            margin: 40px auto; 
-            background: var(--surface-color); 
-            padding: 30px; 
-            border-radius: 15px; 
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1); 
-            border: 1px solid var(--card-border);
-        }
-        
-        body.dark-mode .form-container {
-            background: var(--dark-surface);
-            border-color: var(--dark-card-border);
-        }
-
+        .form-container { max-width: 700px; margin: 40px auto; background: var(--surface-color); padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); border: 1px solid var(--card-border); }
+        body.dark-mode .form-container { background: var(--dark-surface); border-color: var(--dark-card-border); }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .full-width { grid-column: span 2; }
-        .exit { 
-            color: var(--text-color);
-            display:block; 
-            text-align:center; 
-            margin-top:15px; 
-            opacity: 0.6; 
-            text-decoration: none; 
-        }  
-        .dark-mode .exit { 
-            color: white;
-            display:block; 
-            text-align:center; 
-            margin-top:15px; 
-            opacity: 0.6; 
-            text-decoration: none; 
-        }        
+        .exit { color: var(--text-color); display:block; text-align:center; margin-top:15px; text-decoration: none; }  
+        .dark-mode .exit { color: white; }        
         label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--text-color); }
         body.dark-mode label { color: var(--dark-text); }
-
-        input, select, textarea { 
-            width: 100%; 
-            padding: 10px; 
-            border: 1px solid var(--card-border); 
-            border-radius: 8px; 
-            box-sizing: border-box; 
-            background: white;
-            color: var(--text-color);
-        }
-
-        body.dark-mode input, 
-        body.dark-mode select, 
-        body.dark-mode textarea {
-            background: var(--dark-bg);
-            border-color: var(--dark-card-border);
-            color: var(--dark-text);
-        }
-
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid var(--card-border); border-radius: 8px; box-sizing: border-box; background: white; color: var(--text-color); }
+        body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: var(--dark-bg); border-color: var(--dark-card-border); color: var(--dark-text); }
         input[type="checkbox"] { width: auto; margin-right: 8px; }
-
-        button { 
-            background: var(--green-dark); 
-            color: white; 
-            padding: 15px; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            width: 100%; 
-            font-size: 1.1em; 
-            font-weight: 600;
-            transition: 0.3s;
-        }
-        
+        button { background: var(--green-dark); color: white; padding: 15px; border: none; border-radius: 8px; cursor: pointer; width: 100%; font-size: 1.1em; font-weight: 600; transition: 0.3s; }
         button:hover { opacity: 0.9; transform: translateY(-2px); }
-
-        .back-link:hover { opacity: 0.8; }
+        .back-link { text-decoration: none; color: var(--text-color); display: flex; align-items: center; margin-bottom: 20px; font-weight: 500; }
     </style>
 </head>
 <body class="<?= (isset($_COOKIE['darkMode']) && $_COOKIE['darkMode'] === 'enabled') ? 'dark-mode' : '' ?>">
     <?php include 'header.php'; ?>
 
     <div class="form-container">
-        <a href="admin_index.php" class="back-link" style="margin-bottom: 25px; display: inline-flex; align-items: center; text-decoration: none; color: var(--green-dark); font-weight: 600;">
+        <a href="admin_index.php" class="back-link">
             <span class="material-icons" style="margin-right: 8px;">arrow_back</span> Nazaj v nadzorno ploščo
         </a>
 
@@ -174,6 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <label>Ime živali</label>
                     <input type="text" name="ime" required placeholder="Npr. Boni">
                 </div>
+                
                 <div>
                     <label>Vrsta</label>
                     <select name="vrsta">
@@ -182,6 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <?php endforeach; ?>
                     </select>
                 </div>
+                
                 <div>
                     <label>Status</label>
                     <select name="status">
@@ -190,10 +138,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <?php endforeach; ?>
                     </select>
                 </div>
+
                 <div>
                     <label>Starost</label>
                     <input type="text" name="starost" required placeholder="Npr. 2 leti">
                 </div>
+
+                <div>
+                    <label>(Okvirni) Datum rojstva</label>
+                    <input type="date" name="datum_rojstva" required>
+                </div>
+
                 <div>
                     <label>Spol</label>
                     <select name="spol">
@@ -201,27 +156,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <option value="Samička">Samička</option>
                     </select>
                 </div>
+
+                <div>
+                    <label>Teža (kg)</label>
+                    <input type="text" name="teza" required placeholder="Npr. 12.5">
+                </div>
+
                 <div class="full-width">
                     <label>Slika živali</label>
                     <input type="file" name="slika" accept="image/*" required>
                 </div>
+
                 <div class="full-width">
                     <label>Opis</label>
                     <textarea name="opis" rows="4" placeholder="Kratek opis živali..."></textarea>
                 </div>
+
                 <div>
                     <label>Barva kožuha</label>
                     <input type="text" name="barva" required>
                 </div>
-                <div>
-                    <label>Teža (kg)</label>
-                    <input type="text" name="teza" required>
-                </div>
+
                 <div>
                     <label>Datum najdbe</label>
                     <input type="date" name="datum_najdbe" required>
                 </div>
-                <div style="display: flex; gap: 20px; align-items: center; margin-top: 15px;">
+
+                <div class="full-width" style="display: flex; gap: 20px; align-items: center; margin-top: 10px;">
                     <label style="display: flex; align-items: center; cursor: pointer;">
                         <input type="checkbox" name="cepljen"> Cepljen
                     </label>
@@ -229,6 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <input type="checkbox" name="steriliziran"> Steriliziran
                     </label>
                 </div>
+
                 <div class="full-width" style="margin-top: 20px;">
                     <button type="submit">Shrani žival</button>
                     <a href="admin_index.php" class="exit">Prekliči</a>
@@ -238,23 +200,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <?php include 'footer.php'; ?>
-
-    <script>
-        const toggleButton = document.getElementById('darkModeToggle');
-        const body = document.body;
-        
-        function updateDarkMode() {
-            const isDark = body.classList.contains('dark-mode');
-            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-            document.cookie = "darkMode=" + (isDark ? 'enabled' : 'disabled') + ";path=/";
-        }
-
-        if (toggleButton) {
-            toggleButton.addEventListener('click', () => {
-                body.classList.toggle('dark-mode');
-                updateDarkMode();
-            });
-        }
-    </script>
 </body>
 </html>

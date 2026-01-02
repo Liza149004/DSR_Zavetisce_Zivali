@@ -30,7 +30,7 @@ header {
     align-items: center;
     padding: 15px 5%;
     background-color: #ffffff;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.111);
 }
 
 .main {
@@ -81,7 +81,7 @@ header {
     padding: 10px 20px;
     border-radius: 25px;
     border: 1px solid var(--card-border);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.111);
 }
 
 .search-bar input {
@@ -104,7 +104,7 @@ header {
     padding: 20px;
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.111);
 }
 
 .filters-header {
@@ -163,7 +163,7 @@ header {
     border-radius: 12px;
     overflow: hidden;
     background: white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.111);
     transition: transform 0.2s;
     position: relative;
     cursor: pointer;
@@ -243,6 +243,15 @@ header {
     color: var(--green-dark);
 }
 
+.back-link { 
+    opacity: 0.8;
+     margin-bottom: 25px;
+     display: inline-flex; 
+     align-items: center; 
+     text-decoration: none; 
+     color: var(--green-dark); 
+     font-weight: 600; 
+}
 
 /* --- Noga (Footer) --- */
 footer {

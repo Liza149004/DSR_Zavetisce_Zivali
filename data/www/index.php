@@ -43,7 +43,7 @@ $sql = "SELECT
             Z.barvaKozuha,
             V.imeVrste AS vrsta, 
             S.vrstaStatusa AS status, 
-            MAX(F.potDoDatoteke) AS pot_do_slike
+            MIN(F.potDoDatoteke) AS pot_do_slike
         FROM Zival Z
         LEFT JOIN Vrsta V ON Z.TK_vrsta = V.ID_vrsta
         LEFT JOIN Status S ON Z.TK_status = S.ID_status
@@ -127,7 +127,7 @@ try {
 
     <main>
         <section class="hero">
-            <h1>Poišči svojega popolnega spremljevalca</h1>
+            <h1>Poišči svojega popolnega spremljevalca!</h1>
             <p class="tagline">Iščite po imenu, barvi kožuha ali vrsti živali.</p>
             
             <form method="GET" action="" class="search-form">

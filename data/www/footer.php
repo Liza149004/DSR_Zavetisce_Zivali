@@ -12,7 +12,7 @@
         <div class="contact-info">
             <h2>Obiščite Nas</h2>
             <p>123 Shelter Lane</p>
-            <p>Springfield, ST 12345</p>
+            <p>Dawsonville, GA 3053</p>
             <p>Telefon: (555) 123-4567</p>
             <p>E-mail: info.sheltercompass@gmail.com</p>
         </div>

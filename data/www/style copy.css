@@ -30,6 +30,73 @@
     background-color: var(--status-reserved);
 }
 
+.back-link { 
+    opacity: 0.8;
+     margin-bottom: 25px;
+     display: inline-flex; 
+     align-items: center; 
+     text-decoration: none; 
+     color: var(--green-dark); 
+     font-weight: 600; 
+}
+
+.slider-viewport {
+    position: relative;
+    width: 600px;
+    height: 650px; /* Prilagodi svoji višini */
+    overflow: hidden; /* Skrije slike, ki niso na vrsti */
+    border-radius: 15px;
+}
+
+/* Dolga vrsta s slikami */
+.image-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Gladka animacija */
+}
+
+/* Posamezna slika v sliderju */
+.slide-item {
+    min-width: 100%; /* Vsaka slika zavzame celo širino okvirja */
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Gumbi za navigacijo */
+.slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.slider-nav:hover { background: white; }
+.slider-nav.prev { left: 15px; }
+.slider-nav.next { right: 15px; }
+
+.slide-counter {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
 /* Stil za opozorilo v profilu */
 .status-disclaimer {
     border-radius: 4px;
@@ -73,7 +140,7 @@
 .main-content-column {
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.111);
     padding: 0; /* Odstranimo padding, da lahko slika gre do roba */
 }
 
@@ -105,7 +172,7 @@
 .sidebar-card {
     background: #fff;
     border-radius: 12px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.111);
     padding: 20px;
     text-align: center;
     border: 1px solid #eee; /* Dodamo rahlo obrobo */
@@ -130,10 +197,11 @@
 }
 
 .qr-code {
-    width: 120px;
-    height: 120px;
-    margin: 10px auto;
+    width: 150px;
+    height: 150px;
     display: block;
+    margin: 10px auto;
+    background-color: #eee; /* To ti pokaže siv kvadrat, če se slika ne naloži */
 }
 
 /* Glavni podatki (pod sliko) */
