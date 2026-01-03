@@ -1,17 +1,26 @@
-/* --- Splošni Stili in Barvna Shema --- */
 :root {
-    --green-dark: #27ae60;      /* Glavna temno zelena barva v nogi in glavi */
-    --green-light: #e8f5e9;     /* Svetlo zelena ozadja */
+    --green-dark: #4CAF50;
+    --green-light: #e8f5e9;
     --text-color: #333;
     --card-border: #eee;
-    --background-color: #f4f7f6; /* Ozadje celotne strani */
-    --surface-color: #ffffff; /* Barva kartic, modala */
+    --background-color: #f4f7f6;
+    --surface-color: #ffffff;
     --text-secondary: #333;
     --status-available: #4CAF50;
     --status-adopted: #007bff;    
     --status-incare: #ffc107;
     --status-reserved: #2cac9f; 
     --status-inactive: #ff0b07;
+     --dark-bg: #101d1d;
+    --dark-surface: #212d2b;
+    --dark-text: #eeeeee;
+    --dark-text-secondary: #e8f5e9;
+    --dark-card-border: #5a5a5a;
+    --dark-header-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    --dark-link: #ffffff;
+    --dark-hover-bg: #2a3836;
+    --dark-button-primary: #4CAF50;
+    --dark-button-primary-hover: #1d7b44;
 }
 
 body {
@@ -23,7 +32,61 @@ body {
     min-width: 320px;
 }
 
-/* --- Glava (Header) --- */
+/* --- Stili za prijavo --- */
+.login-body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+.login-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 320px; }
+.two-fa-section { background: #e8f5e9; padding: 10px; border-radius: 4px; margin: 10px 0; border-left: 4px solid var(--green-dark); }
+.two-fa-section label { font-size: 0.85rem; color: var(--green-dark); font-weight: bold; }
+.button-login { width: 100%; padding: 12px; background: var(--green-dark); color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; margin-top: 10px; }
+.button-login:hover { background: var(--green-dark); }
+.error { color: var(--status-inactive); text-align: center; margin-bottom: 15px; font-size: 0.9rem; background: #ffebee; padding: 8px; border-radius: 4px; }
+
+/* --- Stili za admin panel --- */
+.admin-nav { background: var(--card-bg); padding: 15px; border-radius: 12px; margin-bottom: 30px; display: flex; gap: 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+.admin-nav a { display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--text-color); font-weight: 600; }
+.msg-bubble { background: #f0f2f5; padding: 15px; border-radius: 10px; font-style: italic; margin-top: 10px; border-left: 4px solid var(--green-dark); }
+.dark-mode .msg-bubble { background: var(--dark-bg); color: #e4e6eb; }
+.admin-badge { background: var(--status-inactive); color: white; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; }
+.btn-accept { background: var(--status-available); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; }
+.btn-reject { background: var(--status-inactive); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; flex: 1; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 5px; }
+
+/* --- Stili za admin seznam panel --- */
+.admin-table-container {max-width: 1000px; margin: 30px auto; padding: 20px; background: var(--surface-color); border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);}
+body.dark-mode .admin-table-container {background: var(--dark-surface); border: 1px solid var(--dark-card-border);}
+table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--card-border); }
+body.dark-mode th, body.dark-mode td { border-bottom: 1px solid var(--dark-card-border); }
+.btn-icon { background: none; border: none; cursor: pointer; padding: 5px; }
+.edit-color { color: var(--green-dark); }
+.delete-color { color: var(--status-inactive); }
+
+/* Stil za modal (povzeto po tvoji logiki) */
+.modal-content { background: var(--surface-color); margin: 5% auto; padding: 25px; border-radius: 15px; width: 90%; max-width: 600px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+input, select, textarea { width: 92%; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); background: white; color: var(--text-color);}
+body.dark-mode input, body.dark-mode select, body.dark-mode textarea {background: var(--dark-bg); border-color: var(--dark-card-border); color: var(--dark-text);}
+.button { background: var(--green-dark); color: white; padding: 15px; border: none; border-radius: 8px; cursor: pointer; width: 100%; font-size: 1.1em; }
+.status-badge {padding: 5px 12px;border-radius: 20px;font-weight: bold;color: white;display: inline-block;}
+.aktiven, .available { background-color: var(--status-available); }
+.posvojen, .adopted { background-color: var(--status-adopted); }
+.v-oskrbi, .in-care { background-color: var(--status-incare); }
+.rezerviran, .reserved { background-color: var(--status-reserved); }
+.neaktiven, .inactive { background-color: var(--status-inactive); }
+
+/* --- Stili za admin dodajanje panel --- */       
+.form-container { max-width: 700px; margin: 40px auto; background: var(--surface-color); padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); border: 1px solid var(--card-border); }
+body.dark-mode .form-container { background: var(--dark-surface); border-color: var(--dark-card-border); }
+.full-width { grid-column: span 2; }
+.exit { color: var(--text-color); display:block; text-align:center; margin-top:15px; text-decoration: none; }  
+.dark-mode .exit { color: white; }        
+label { display: block; margin-bottom: 5px; font-weight: bold; color: var(--text-color); }
+body.dark-mode label { color: var(--dark-text); }
+body.dark-mode input, body.dark-mode select, body.dark-mode textarea { background: var(--dark-bg); border-color: var(--dark-card-border); color: var(--dark-text); }
+input[type="checkbox"] { width: auto; margin-right: 8px; }
+.button-add { background: var(--green-dark); color: white; padding: 15px; border: none; border-radius: 8px; cursor: pointer; width: 100%; font-size: 1.1em; font-weight: 600; transition: 0.3s; }
+.button-add:hover { opacity: 0.9; transform: translateY(-2px); }
+.back-link { text-decoration: none; color: var(--text-color); display: flex; align-items: center; margin-bottom: 20px; font-weight: 500; }
+    
 header {
     display: flex;
     justify-content: space-between;
@@ -54,7 +117,6 @@ header {
     color: #888;
 }
 
-/* --- Sekcija Hero / Iskanje --- */
 .hero {
     background-color: var(--green-light);
     text-align: center;
@@ -97,7 +159,6 @@ header {
     margin-right: 10px;
 }
 
-/* --- Sekcija Filtri --- */
 .filters-container {
     max-width: 90%;
     margin: 30px auto;
@@ -194,26 +255,6 @@ header {
     font-weight: bold;
 }
 
-.available {
-    background-color: var(--status-available);
-}
-
-.adopted {
-    background-color: var(--status-adopted);
-}
-
-.in-care {
-    background-color: var(--status-incare);
-}
-
-.inactive {
-    background-color: var(--status-inactive);
-}
-
-.reserved {
-    background-color: var(--status-reserved);
-}
-
 .card-details {
     padding: 15px 20px;
     position: relative;
@@ -253,7 +294,6 @@ header {
      font-weight: 600; 
 }
 
-/* --- Noga (Footer) --- */
 footer {
     background-color: var(--green-light);
     padding-top: 40px;
@@ -289,38 +329,6 @@ footer {
     flex-direction: column;
 }
 
-/* Simulacija zemljevida */
-.map-placeholder {
-    background-color: #b3e5fc; /* Svetlo modro ozadje zemljevida */
-    height: 200px;
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-}
-
-.map-controls {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    display: flex;
-    flex-direction: column;
-    z-index: 10;
-}
-
-.map-controls button {
-    background: white;
-    border: 1px solid #ccc;
-    width: 30px;
-    height: 30px;
-    margin-bottom: 5px;
-    cursor: default; /* Simulacija nedelovanja */
-    font-weight: bold;
-    font-size: 1.2em;
-    line-height: 1;
-    border-radius: 3px;
-    color: #555;
-}
-
 .map-footer-text {
     position: absolute;
     bottom: 5px;
@@ -333,39 +341,34 @@ footer {
 .copyright {
     text-align: center;
     padding: 15px;
-    border-top: 1px solid #388e3c; /* Temnejša zelena linija */
+    border-top: 1px solid #388e3c;
     margin-top: 30px;
     font-size: 0.9em;
 }
 
-/* Povezava, ki ovija kartico, mora izgledati kot kartica */
 .animal-card-link {
-    text-decoration: none; /* Odstrani podčrtaj */
-    color: inherit; /* Podeduje barvo teksta starša */
-    display: contents; /* Pomaga, da se grid postavi pravilno, kot da <a> ne obstaja */
+    text-decoration: none;
+    color: inherit;
+    display: contents;
 }
 
-/* Premaknemo transformacijo iz .animal-card na .animal-card-link, 
-   da deluje, ko kliknemo kjerkoli na kartici */
 .animal-card-link:hover .animal-card {
     transform: translateY(-5px);
 }
 
 @media (max-width: 1024px) {
-    /* Za srednje velike zaslone (npr. iPad) nastavimo 2 stolpca */
     .animal-gallery {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    /* Za mobilne naprave nastavimo 1 stolpec */
     .filters-grid {
         grid-template-columns: 1fr;
     }
     
     .animal-gallery {
-        grid-template-columns: 1fr; /* Samo en stolpec na mobilnih napravah */
+        grid-template-columns: 1fr;
     }
     
     .footer-content {
@@ -382,34 +385,31 @@ footer {
         min-width: 90%;
     }
 }
-:root {
-    --dark-bg: #101d1d;
-    --dark-surface: #212d2b;
-    --dark-text: #eeeeee;
-    --dark-text-secondary: #e8f5e9;
-    --dark-card-border: #5a5a5a;
-}
 
-/* 1. GLOBALNI TEMNI NAČIN */
+/*DARK MODE*/
 body.dark-mode {
     background-color: var(--dark-bg);
     color: var(--dark-text);
 }
 
-/* 2. GLAVA/NOGA IN KARTICE */
 body.dark-mode .main-header,
 body.dark-mode footer,
 body.dark-mode .animal-card,
 body.dark-mode .modal-content,
-body.dark-mode .sidebar-card {
+body.dark-mode .sidebar-card,
+body.dark-mode .share-profile-box,
+body.dark-mode .inquiry-box {
     background-color: var(--dark-surface);
     color: var(--dark-text);
-    border-color: var(--dark-card-border);
+    border-color: 1px solid var(--dark-card-border);
+    border-radius: 12px;
 }
-body.dark-mode .description{
+
+body.dark-mode .description,
+body.dark-mode .type-info{
     background-color: #323e3c;
 }
-/* 3. HERO in OSTALI TEXT */
+
 body.dark-mode h1,
 body.dark-mode h2,
 body.dark-mode h3,
@@ -418,12 +418,17 @@ body.dark-mode .type-info {
     color: var(--dark-text);
 }
 
-body.dark-mode .tagline {
+body.dark-mode .tagline,
+body.dark-mode .meta-label {
     color: var(--dark-text);
-    background-color: var(--dark-bg);
+    background-color: var(--dark-surface);
 }
 
-/* 4. FILTRI IN ISKALNA VRSTICA */
+body.dark-mode .meta-value {
+    background-color: var(--dark-surface);
+    color: #ffffff;
+}
+
 body.dark-mode .search-bar,
 body.dark-mode .filter-group select,
 body.dark-mode .filters-container {
@@ -437,11 +442,9 @@ body.dark-mode .search-bar input {
     color: var(--dark-text);
 }
 
-/* 5. METRIKE IN ZELENI BLOKI (EAF8EB) */
 body.dark-mode .meta-item {
-    background-color: #212d2b; /* Temnejša siva/zelena za ozadje */
-    border-color: #777;
-
+    background-color: var(--dark-surface); 
+    border: 1px solid var(--dark-card-border);
 }
 
 body.dark-mode p,
@@ -451,11 +454,11 @@ body.dark-mode .filter-group label {
     color: #d8d8d8;
 }
 
-/* 6. MODAL (Obrazec) */
 body.dark-mode .form-group input,
 body.dark-mode .form-group textarea {
-    background-color: #212d2b;
-    border-color: #777;
+    background-color: #334444;
+    border: 1px solid #777;
+    border-radius: 6px;
     color: var(--dark-text);
 }
 
@@ -463,17 +466,631 @@ body.dark-mode .modal-footer {
     border-top-color: #777;
 }
 
-/* 7. PREKLICNI GUMB v Modalu */
 body.dark-mode .cancel-button {
     background-color: #333;
     color: var(--dark-text);
     border-color: #555;
 }
-/* 2. GLAVA (Header) */
+body.dark-mode .cancel-button:hover {
+    background-color: #5d6d6d;
+}
 body.dark-mode header {
     background-color: var(--dark-surface);
     box-shadow: var(--dark-header-box-shadow);
 }
 body.dark-mode .hero {
-    background-color: #101d1d; /* Temnejša, a še vedno prepoznavna zelena */
+    background-color: var(--dark-bg);
+}
+body.dark-mode .hero p {
+    background-color: var(--dark-bg);
+}
+body.dark-mode a {
+    color: var(--dark-link);
+}
+
+body.dark-mode a:hover {
+    color: var(--dark-text-secondary);
+}
+
+body.dark-mode .main-content-column {
+    background-color: #323e3c;
+}
+
+body.dark-mode .health-badge.checked {
+    background-color: #263c26;
+    border-color: #264b27;
+    color: var(--dark-text);
+}
+
+body.dark-mode .health-badge.unchecked {
+    background-color: #4a3434;
+    border-color: #775555;
+    color: var(--dark-text);
+}
+
+body.dark-mode .submit-button {
+    background-color: var(--dark-button-primary); 
+    color: var(--dark-text-secondary);
+}
+
+body.dark-mode .submit-button:hover {
+    background-color: var(--dark-button-primary-hover);
+}
+
+body.dark-mode .back-link {
+    color: var(--dark-link);
+}
+body.dark-mode .back-link:hover {
+    background-color: var(--dark-hover-bg);
+}
+
+body.dark-mode .image-area {
+    border: 1px solid var(--dark-card-border);
+}
+
+body.dark-mode .inquiry-button {
+    background-color: var(--dark-button-primary);
+    color: var(--dark-text);
+    border: none;
+}
+body.dark-mode .inquiry-button:hover {
+    background-color: var(--dark-button-primary-hover);
+}
+
+body.dark-mode .sidebar-on-image-row {
+    background-color: #323e3c;
+}
+
+/*KONEC DARK MODE*/
+
+.back-link { 
+    opacity: 0.8;
+     margin-bottom: 25px;
+     display: inline-flex; 
+     align-items: center; 
+     text-decoration: none; 
+     color: var(--green-dark); 
+     font-weight: 600; 
+}
+
+.slider-viewport {
+    position: relative;
+    width: 600px;
+    height: 650px;
+    overflow: hidden;
+    border-radius: 15px;
+}
+
+.image-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-item {
+    width: 100%;
+    flex-shrink: 0;
+    height: 650px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+}
+
+
+.slider-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.slider-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.slider-nav:hover { background: white; }
+.slider-nav.prev { left: 15px; }
+.slider-nav.next { right: 15px; }
+
+.slide-counter {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.status-disclaimer {
+    border-radius: 4px;
+    color: var(--text-color);
+    line-height: 1.4;
+}
+
+.inquiry-button:disabled {
+    background: #a0a0a0 !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.profile-container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 5%;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--green-dark, #388E3C);
+    font-weight: 500;
+    margin-bottom: 25px;
+}
+
+.profile-layout-grid {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 30px;
+}
+
+.main-content-column {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.111);
+    padding: 0;
+}
+
+.image-sidebar-wrapper {
+    display: flex;
+    gap: 30px;
+    padding: 30px 30px 0 30px;
+}
+
+.image-area {
+    flex: 2;
+    height: 450px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.sidebar-on-image-row {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.111);
+    padding: 20px;
+    text-align: center;
+}
+
+.inquiry-box {
+    background-color: var(--green-light-bg, #EAF8EB);
+    border: none;
+    padding: 25px 20px;
+}
+
+.inquiry-button {
+    background-color: var(--status-available, #4CAF50);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    width: 100%;
+}
+
+.qr-code {
+    width: 150px;
+    height: 150px;
+    display: block;
+    margin: 10px auto;
+    background-color: #eee;
+}
+
+.profile-data-box {
+    padding: 30px;
+}
+
+.name-status-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.name-status-row h1 {
+    font-size: 2.2em;
+    margin: 0;
+    color: var(--text-color, #333);
+    display: flex;
+    align-items: center;
+}
+
+.name-status-row h1 .material-icons {
+    margin-left: 10px;
+}
+
+.name-status-row .status-badge {
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9em;
+    background-color: var(--status-available, #4CAF50);
+    color: white;
+    min-width: 180px; 
+    text-align: center;
+}
+
+.type-info {
+    font-size: 1.1em;
+    color: #777;
+    margin: 0;
+}
+
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.meta-item {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    align-items: center;
+    background-color: var(--green-light-bg, #EAF8EB); 
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: var(--text-color, #333);
+}
+
+.meta-item .material-icons {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    margin-right: 15px;
+    font-size: 2em;
+    color: var(--green-dark);
+}
+
+.meta-item .meta-value {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.meta-item .meta-label {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    margin: 0;
+    font-size: 0.85em;
+    color: #777;
+}
+
+h2 {
+    font-size: 1.5em;
+    color: var(--text-color, #333);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.health-badges-wrapper {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.health-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 1em;
+    border: 1px solid #ddd;
+    min-width: 180px;
+    justify-content: flex-start;
+}
+
+.health-badge .material-icons {
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+
+.health-badge.checked {
+    background-color: var(--green-light-bg, #EAF8EB);
+    color: var(--green-dark, #388E3C);
+    border-color: var(--green-main, #4CAF50);
+}
+
+.health-badge.checked .material-icons {
+    color: var(--green-main, #4CAF50);
+}
+
+.health-badge.unchecked {
+    background-color: #fcebeb;
+    color: #d32f2f;
+    border-color: #f44336;
+}
+
+.health-badge.unchecked .material-icons {
+    color: #f44336;
+}
+
+@media (max-width: 900px) {
+    .profile-layout-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .profile-container {
+        padding: 20px;
+    }
+
+    .image-sidebar-wrapper {
+        flex-direction: column;
+        padding: 15px;
+        gap: 20px;
+    }
+
+    .image-area, 
+    .slider-viewport,
+    .slide-item {
+        height: auto;
+        aspect-ratio: 4 / 3;
+        width: 100%;
+        max-height: 400px;
+    }
+
+    .slider-img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+    }
+
+    .sidebar-on-image-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .sidebar-card {
+        flex: 1;
+        min-width: 250px;
+    }
+
+    .meta-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .profile-data-box {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .sidebar-on-image-row {
+        flex-direction: column;
+    }
+
+    .image-area, 
+    .slider-viewport {
+        aspect-ratio: 1 / 1;
+    }
+
+    .name-status-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .health-badges-wrapper {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .health-badge {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        margin: 10% auto;
+        padding: 15px;
+        border-radius: 10px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .full-width {
+        grid-column: span 1;
+    }
+
+    .modal-header h2 {
+        font-size: 1.3em;
+    }
+
+    .modal-footer {
+        flex-direction: column-reverse;
+        gap: 10px;
+        padding-top: 15px;
+    }
+
+    .cancel-button, 
+    .submit-button,
+    .button-add,
+    .button {
+        width: 100%;
+        margin-right: 0;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .form-group label {
+        font-size: 0.9em;
+        margin-bottom: 3px;
+    }
+
+    input, select, textarea {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    .close-button {
+        top: 5px;
+        right: 10px;
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 400px) {
+    .modal-content {
+        margin: 5% auto;
+        padding: 10px;
+    }
+    
+    .modal-header p {
+        font-size: 0.8em;
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed; 
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-header {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.modal-header p {
+    color: #6c757d;
+    margin-top: 5px;
+    font-size: 0.9em;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.required {
+    color: #dc3545;
+    font-weight: normal;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+    margin-top: 20px;
+}
+
+.cancel-button {
+    background-color: white;
+    color: #495057;
+    border: 1px solid #ced4da;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.submit-button {
+    background-color: var(--status-available, #4CAF50);    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
 }

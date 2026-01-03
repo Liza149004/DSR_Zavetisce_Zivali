@@ -1,22 +1,22 @@
 <?php
-$host = "mysql";
-$db = "Zavetisce_za_zivali";
-$user = "root";
-$pass = "superVarnoGeslo";
-$charset = "utf8mb4"; 
+     $host = "mysql";
+     $db = "Zavetisce_za_zivali";
+     $user = "root";
+     $pass = "superVarnoGeslo";
+     $charset = "utf8mb4"; 
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset"; 
+     $dsn = "mysql:host=$host;dbname=$db;charset=$charset"; 
 
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
+     $options = [
+     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+     PDO::ATTR_EMULATE_PREPARES   => false,
+     ];
 
-try {
-     $pdo = new PDO($dsn, $user, $pass, $options);
-     
-} catch (\PDOException $e) {
-     die("Napaka pri povezovanju z bazo: " . $e->getMessage()); 
-}
+     try {
+          $pdo = new PDO($dsn, $user, $pass, $options);
+          
+     } catch (\PDOException $e) {
+          die("Napaka pri povezovanju z bazo: " . $e->getMessage()); 
+     }
 ?>

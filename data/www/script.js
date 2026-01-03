@@ -1,14 +1,11 @@
-/**
- * ShelterCompass - Centralna JavaScript datoteka
- * Upravlja Dark Mode, Slider slik in vse modalne okne (User & Admin)
- */
+/* ShelterCompass - Centralna JavaScript datoteka
+  Upravlja Dark Mode, Slider slik in vse modalne okne (User & Admin) */
 
 document.addEventListener('DOMContentLoaded', () => {
-    
-    /* --- 1. DARK MODE (Sinhronizacija JS in PHP) --- */
+    //DARK MODE
     const toggleButton = document.getElementById('darkModeToggle');
     const body = document.body;
-    
+
     const applyDarkMode = (isDark) => {
         if (isDark) {
             body.classList.add('dark-mode');
@@ -18,8 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (toggleButton) toggleButton.textContent = 'dark_mode';
         }
     };
-
-    // Preveri ob nalaganju
+    //preveri ob nalaganju
     const savedMode = localStorage.getItem('darkMode') === 'enabled';
     applyDarkMode(savedMode);
 
@@ -33,29 +29,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /* --- 2. UNIVERZALNA LOGIKA ZA MODALE --- */
-    
-    // Splošna funkcija za zapiranje vseh modalov
+    //UNIVERZALNA LOGIKA ZA MODALE/POP UP OKNA
+    //splošna funkcija za zapiranje vseh modalov
     window.closeModal = () => {
         const modals = document.querySelectorAll('.modal');
         modals.forEach(m => m.style.display = 'none');
     };
-
-    // Zapiranje s tipko Esc ali klikom zunaj modala
+    window.zapriModal = window.closeModal;
+    //zapiranje s tipko Esc ali klikom zunaj modala
     window.addEventListener('click', (e) => {
         if (e.target.classList.contains('modal')) window.closeModal();
     });
     window.addEventListener('keydown', (e) => {
         if (e.key === "Escape") window.closeModal();
     });
-
-    // --- A: Modal za Povpraševanje (Uporabnik) ---
+    //A: Modal za oddajo pvpraševanja (Uporabnik)
     window.openModal = () => {
         const modal = document.getElementById('inquiryModal');
         if (modal) modal.style.display = 'block';
     };
-
-    // --- B: Modal za Termine (Admin Index) ---
+    //B: Modal za sprejemanje in termine (Admin index)
     let trenutniPovpId = null;
     window.odpriModal = (id) => {
         trenutniPovpId = id;
@@ -80,13 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Prosim, izberite datum in uro!");
         }
     };
-
-    // --- C: Modal za Urejanje Živali (Admin Seznam) ---
+    //C: Modal za urejanje živali (Admin seznam)
     window.openEditModal = (zival) => {
         const modal = document.getElementById('editModal');
         if (!modal) return;
-
-        // Napolnimo polja s podatki iz JSON objekta
+        //napolnimo polja s podatki
         document.getElementById('edit_id').value = zival.ID_zival;
         document.getElementById('edit_ime').value = zival.ime;
         document.getElementById('modalTitle').innerText = "Urejanje: " + zival.ime;
@@ -99,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'block';
     };
 
-    /* --- 3. SLIDER SLIK (Profil Živali) --- */
+    //SLIDER SLIK
     const imageTrack = document.getElementById('imageTrack');
     const currentIdxDisplay = document.getElementById('currentIdx');
     
