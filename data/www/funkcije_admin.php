@@ -45,7 +45,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 
                 if ($akcija == 'sprejmi') {
                     $status = 'Sprejeto';
-                    $subject = "Dobre novice! Vaše povpraševanje za $ime_zivali je sprejeto";
+                    $subject = "Dobra novica! Vaše povpraševanje za $ime_zivali je sprejeto";
                     //stilizirano HTML sporočilo - mail
                     $mail_body = "
                     <div style='background-color: #f4f7f6; padding: 30px; font-family: sans-serif;'>
