@@ -205,11 +205,12 @@ INSERT INTO Fotografija (ID_fotografija, potDoDatoteke, TK_zival) VALUES
 (38, 'slike/Tačko_5.jpg', 14),
 (39, 'slike/Nona_1.jpg', 15);
 
-INSERT INTO Uporabnik (ime, priimek, email, geslo, TK_tip_uporabnika) 
+INSERT INTO Uporabnik (ime, priimek, email, geslo, TK_tip_uporabnika, two_fa_secret) 
 VALUES (
     'Liza', 
     'Admin', 
     'info.sheltercompass@gmail.com', 
     '$2y$12$khQ/bV2FteS6mSq.LBrAwOOiqbe6l7R4h.t82k8bRy0NNHd.Dy3sG',
-    2
+    2,
+    'OQB6ZZGYHCPSX4AK'
 );
