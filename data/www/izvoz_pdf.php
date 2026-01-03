@@ -42,7 +42,7 @@
     $pdf->AddFont('DejaVu', 'B', 'DejaVuSans-Bold.ttf', true);
     $pdf->fontsReady = true;
 
-    $zelena_bg = [39, 174, 96];
+    $zelena_bg = [76, 175, 80];
     //1. STRAN: STANJE ŽIVALI
     $pdf->AddPage();
     $pdf->SetFont('DejaVu', 'B', 13);

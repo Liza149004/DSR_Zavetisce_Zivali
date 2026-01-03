@@ -34,7 +34,7 @@
     //ŽIVALI
     echo '<h3>1. Pregled živali v zavetišču</h3>';
     echo '<table border="1">';
-    echo '<tr style="background-color: #27ae60; color: #e8f5e9; font-weight: bold;">';
+    echo '<tr style="background-color: #4caf50ff; color: #e8f5e9; font-weight: bold;">';
     echo '<th>Ime živali</th><th>Vrsta</th><th>Status</th><th>Starost</th>';
     echo '</tr>';
 
@@ -52,7 +52,7 @@
     //POVPRAŠEVANJA
     echo '<h3>2. Zgodovina povpraševanj</h3>';
     echo '<table border="1">';
-    echo '<tr style="background-color: #4CAF50; color: #e8f5e9; font-weight: bold;">';
+    echo '<tr style="background-color: #4caf50ff; color: #e8f5e9; font-weight: bold;">';
     echo '<th>Uporabnik</th><th>Žival</th><th>Datum</th><th>Status povpraševanja</th>';
     echo '</tr>';
 
