@@ -540,6 +540,11 @@ body.dark-mode .inquiry-button:hover {
 body.dark-mode .sidebar-on-image-row {
     background-color: #323e3c;
 }
+body.dark-mode .status-disclaimer {
+    border-radius: 4px;
+    color: var(--green-light);
+    line-height: 1.4;
+}
 
 /*KONEC DARK MODE*/
 
