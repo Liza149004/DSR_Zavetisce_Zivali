@@ -45,22 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit">Prijava</button>
         </form>
     </div>
-    <script>
-        const toggleButton = document.getElementById('darkModeToggle');
-        const body = document.body;
-        
-        function updateDarkMode() {
-            const isDark = body.classList.contains('dark-mode');
-            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-            document.cookie = "darkMode=" + (isDark ? 'enabled' : 'disabled') + ";path=/";
-        }
-
-        if (toggleButton) {
-            toggleButton.addEventListener('click', () => {
-                body.classList.toggle('dark-mode');
-                updateDarkMode();
-            });
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

@@ -22,23 +22,26 @@
     $animal = null;
 
     if ($animal_id && is_numeric($animal_id)) {
-        $sql = "SELECT Z.ime AS ime_zivali, Z.opis, Z.starost, Z.spol, Z.barvaKozuha, Z.teza, 
-                       Z.cepljen, Z.sterilizacija, V.imeVrste AS vrsta, S.vrstaStatusa AS status,
-                       MAX(F.potDoDatoteke) AS pot_do_slike
-                FROM Zival Z
-                LEFT JOIN Vrsta V ON Z.TK_vrsta = V.ID_vrsta
-                LEFT JOIN Status S ON Z.TK_status = S.ID_status
-                LEFT JOIN Fotografija F ON Z.ID_zival = F.TK_zival
-                WHERE Z.ID_zival = :id
-                GROUP BY Z.ID_zival, Z.ime, Z.opis, Z.starost, Z.spol, Z.barvaKozuha, Z.teza, Z.cepljen, Z.sterilizacija, V.imeVrste, S.vrstaStatusa"; 
+    // Dodali smo Z.datumRojstva v SELECT in GROUP BY
+    $sql = "SELECT Z.ime AS ime_zivali, Z.opis, Z.starost, Z.datumRojstva, Z.spol, Z.barvaKozuha, Z.teza, 
+                   Z.cepljen, Z.sterilizacija, V.imeVrste AS vrsta, S.vrstaStatusa AS status,
+                   MAX(F.potDoDatoteke) AS pot_do_slike
+            FROM Zival Z
+            LEFT JOIN Vrsta V ON Z.TK_vrsta = V.ID_vrsta
+            LEFT JOIN Status S ON Z.TK_status = S.ID_status
+            LEFT JOIN Fotografija F ON Z.ID_zival = F.TK_zival
+            WHERE Z.ID_zival = :id
+            GROUP BY Z.ID_zival, Z.ime, Z.opis, Z.starost, Z.datumRojstva, Z.spol, Z.barvaKozuha, Z.teza, Z.cepljen, Z.sterilizacija, V.imeVrste, S.vrstaStatusa"; 
 
         $stmt = $pdo->prepare($sql);
         $stmt->execute([':id' => $animal_id]);
         $animal = $stmt->fetch();
+
+        // Pridobivanje vseh slik ostane enako
         $sql_images = "SELECT potDoDatoteke FROM Fotografija WHERE TK_zival = :id";
         $stmt_img = $pdo->prepare($sql_images);
         $stmt_img->execute([':id' => $animal_id]);
-        $images = $stmt_img->fetchAll(PDO::FETCH_COLUMN); // Dobi tabelo poti do slik
+        $images = $stmt_img->fetchAll(PDO::FETCH_COLUMN);
     }
 
     if ($animal):
@@ -57,12 +60,19 @@
                 <div class="image-sidebar-wrapper">
                     <div class="slider-viewport">
                         <div id="imageTrack" class="image-track">
-                            <?php foreach ($images as $img_path): ?>
-                                <div class="slide-item" style="background-image: url('<?php echo htmlspecialchars($img_path); ?>');"></div>
+                            <?php foreach ($images as $index => $img_path): ?>
+                                <div class="slide-item">
+                                    <img src="<?php echo htmlspecialchars($img_path); ?>" 
+                                        alt="Slika <?php echo $index + 1; ?>" 
+                                        loading="lazy" 
+                                        class="slider-img">
+                                </div>
                             <?php endforeach; ?>
                             
                             <?php if (empty($images)): ?>
-                                <div class="slide-item" style="background-image: url('images/placeholder.jpg');"></div>
+                                <div class="slide-item">
+                                    <img src="images/placeholder.jpg" alt="Ni slike" loading="lazy" class="slider-img">
+                                </div>
                             <?php endif; ?>
                         </div>
 
@@ -116,6 +126,7 @@
 
                     <div class="meta-grid">
                         <div class="meta-item"><span class="material-icons">calendar_today</span><p class="meta-value"><?php echo htmlspecialchars($animal['starost']); ?></p><p class="meta-label">Starost</p></div>
+                        <div class="meta-item"><span class="material-icons">cake</span><p class="meta-value"><?php echo date("d. m. Y", strtotime($animal['datumRojstva'])); ?></p><p class="meta-label">Rojstni dan</p></div>
                         <div class="meta-item"><span class="material-icons">favorite</span><p class="meta-value"><?php echo htmlspecialchars($animal['spol']); ?></p><p class="meta-label">Spol</p></div>
                         <div class="meta-item"><span class="material-icons">monitor_weight</span><p class="meta-value"><?php echo htmlspecialchars($animal['teza']); ?> kg</p><p class="meta-label">Teža</p></div>
                         <div class="meta-item"><span class="material-icons">palette</span><p class="meta-value"><?php echo htmlspecialchars($animal['barvaKozuha']); ?></p><p class="meta-label">Barva</p></div>
@@ -165,53 +176,8 @@
             </form>
         </div>
     </div>
-
-    <script>
-        function openModal() { document.getElementById('inquiryModal').style.display = 'block'; }
-        function closeModal() { document.getElementById('inquiryModal').style.display = 'none'; }
-        window.onclick = function(e) { if(e.target == document.getElementById('inquiryModal')) closeModal(); }
-        let currentIdx = 0;
-        const totalImages = <?php echo count($images); ?>;
-
-        function moveSlide(direction) {
-            currentIdx += direction;
-
-            // Kroženje (če prideš do konca, skoči na začetek)
-            if (currentIdx >= totalImages) {
-                currentIdx = 0;
-            } else if (currentIdx < 0) {
-                currentIdx = totalImages - 1;
-            }
-
-            // Izračunaj odmik v odstotkih
-            const offset = currentIdx * -100;
-            
-            // Premakni celotno vrsto slik
-            document.getElementById('imageTrack').style.transform = `translateX(${offset}%)`;
-            
-            // Posodobi številko
-            document.getElementById('currentIdx').textContent = currentIdx + 1;
-        }
-        // DARK MODE LOGIKA
-        const toggleButton = document.getElementById('darkModeToggle');
-        const body = document.body;
-        
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            body.classList.add('dark-mode');
-            if(toggleButton) toggleButton.textContent = 'light_mode';
-        }
-
-        function toggleDarkMode() {
-            body.classList.toggle('dark-mode');
-            const mode = body.classList.contains('dark-mode') ? 'enabled' : 'disabled';
-            localStorage.setItem('darkMode', mode);
-            if(toggleButton) toggleButton.textContent = (mode === 'enabled') ? 'light_mode' : 'dark_mode';
-        }
-
-        if (toggleButton) {
-            toggleButton.addEventListener('click', toggleDarkMode);
-        }
-    </script>
+ 
+    <script src="script.js"></script>
 
     <?php include 'footer.php'; ?>
 </body>

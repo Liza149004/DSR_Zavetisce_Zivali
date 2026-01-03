@@ -228,65 +228,7 @@ $povp = $pdo->query($sql)->fetchAll();
         </section>
     </main>
 
-    <script>
-        let trenutniPovpId = null;
-
-        function odpriModal(id) {
-            trenutniPovpId = id;
-            document.getElementById('terminModal').style.display = 'block';
-            
-            // Nastavimo privzeti čas (jutri ob 10:00)
-            let jutri = new Date();
-            jutri.setDate(jutri.getDate() + 1);
-            jutri.setHours(10, 0, 0, 0);
-            
-            // Formatiranje za datetime-local input
-            let leto = jutri.getFullYear();
-            let mesec = String(jutri.getMonth() + 1).padStart(2, '0');
-            let dan = String(jutri.getDate()).padStart(2, '0');
-            let ura = String(jutri.getHours()).padStart(2, '0');
-            let min = String(jutri.getMinutes()).padStart(2, '0');
-            
-            document.getElementById('inputTermin').value = `${leto}-${mesec}-${dan}T${ura}:${min}`;
-        }
-
-        function zapriModal() {
-            document.getElementById('terminModal').style.display = 'none';
-        }
-
-        function potrdiSprejem() {
-            let termin = document.getElementById('inputTermin').value;
-            if (termin) {
-                window.location.href = "admin_index.php?akcija=sprejmi&id_povp=" + trenutniPovpId + "&termin=" + encodeURIComponent(termin);
-            } else {
-                alert("Prosim, izberite datum in uro!");
-            }
-        }
-
-        // Zapiranje modala s klikom zunaj okna
-        window.onclick = function(event) {
-            const modal = document.getElementById('terminModal');
-            if (event.target == modal) {
-                zapriModal();
-            }
-        }
-
-        const toggleButton = document.getElementById('darkModeToggle');
-        const body = document.body;
-        
-        function updateDarkMode() {
-            const isDark = body.classList.contains('dark-mode');
-            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-            document.cookie = "darkMode=" + (isDark ? 'enabled' : 'disabled') + ";path=/";
-        }
-
-        if (toggleButton) {
-            toggleButton.addEventListener('click', () => {
-                body.classList.toggle('dark-mode');
-                updateDarkMode();
-            });
-        }
-    </script>
+    <script src="script.js"></script>
     <?php include 'footer.php'; ?>
 </body>
 </html>

@@ -151,17 +151,18 @@ INSERT INTO Zival (ID_zival, ime, opis, starost, spol, barvaKozuha, teza, ceplje
 (2, 'Nuage', 'Najboljši prijatelj objemom in spanju', '2 leti', 'Samec', 'Bel z lisami', '3,5', 0, 1, '2023-06-09', '2023-05-09', 2, 3, 1),
 (3, 'Orage', 'Ko pride zima se spremeni v debelo kepo puha', '2 leti', 'Samec', 'Pikčasto/tigrasto sivorjav', '3,8', 0, 1, '2023-06-09', '2023-05-09', 2, 3, 1),
 (4, 'Garfield', 'Ta pravi', '3 leta', 'Samec', 'Tigrasto oranžen', '4,3', 0, 1, '2023-05-03', '2022-06-10', 2, 1, 1),
-(5, 'Blacky', 'Elegantna črna mačka, ki rada raziskuje okolico.', '1 leta', 'Samec', 'Črna', '4.5', 1, 1, '2024-02-10', '2021-05-15', 2, 1, 1),
+(5, 'Blacky', 'Elegantna črna mačka, ki rada raziskuje okolico.', '1 leto', 'Samec', 'Črna', '4.5', 1, 1, '2024-02-10', '2021-05-15', 2, 1, 1),
 (6, 'Kara', 'Zelo fotogenična in mirna muca.', '3 leta', 'Samička', 'Tigrastosiva', '3.9', 1, 1, '2024-03-20', '2022-04-10', 2, 1, 1),
 (7, 'Milo', 'Mlad in igriv maček, ki obožuje igračke.', '1 leto', 'Samec', 'Oranžno-bel', '3.2', 1, 0, '2025-01-05', '2024-05-20', 2, 1, 1),
-(8, 'Moustache', 'Gospod z rdečo pentljo in izjemnim karakterjem.', '3 let', 'Samec', 'Tigrast', '4.8', 1, 1, '2023-11-12', '2020-08-01', 2, 1, 1),
-(9, 'Olaf', 'Zvest zlati prinašalec, ki se vedno smeji.', '10 leta', 'Samec', 'Zlata', '28.0', 1, 1, '2024-06-15', '2022-12-01', 1, 1, 1),
+(8, 'Moustache', 'Gospod z rdečo pentljo in izjemnim karakterjem.', '3 leta', 'Samec', 'Tigrast', '4.8', 1, 1, '2023-11-12', '2020-08-01', 2, 1, 1),
+(9, 'Olaf', 'Zvest zlati prinašalec, ki se vedno smeji.', '10 let', 'Samec', 'Zlata', '28.0', 1, 1, '2024-06-15', '2022-12-01', 1, 1, 1),
 (10, 'Betty', 'Ljubka in radovedna. Alos, "dog"', '5 mesecev', 'Samička', 'Bela s črnimi lisami', '25.0', 1, 1, '2024-08-20', '2023-01-10', 3, 1, 1),
 (11, 'Bone', 'Majhen raziskovalec, ki je vedno poln energije.', '2 meseca', 'Samec', 'Rjavo-bel', '10.5', 1, 0, '2025-02-01', '2024-07-15', 1, 1, 1),
-(12, 'Luna', 'Nežna duša, ki išče miren dom.', '13 leti', 'Samička', 'Črno-bela', '12.0', 1, 1, '2024-10-05', '2023-04-12', 1, 1, 1),
-(13, 'Puhko', 'Majhen, puhast mladiček, ki potrebuje veliko pozornosti.', '2 meseca', 'Samec', 'Siva', '0.8', 0, 0, '2025-12-01', '2025-10-01', 2, 1, 1),
-(14, 'Lili', 'Najdena v škatli pred vrati, zelo igriva.', '6 tednov', 'Samička', 'Tribarvna', '0.5', 0, 0, '2025-12-20', '2025-11-08', 2, 1, 1),
-(15, 'Bobi', 'Mladič mešančka, ki bo verjetno zrasel v velikega psa.', '5 mesecev', 'Samec', 'Rjava', '4.2', 1, 0, '2025-11-15', '2025-07-15', 1, 1, 1);
+(12, 'Luna', 'Nežna duša, ki išče miren dom.', '13 let', 'Samička', 'Črno-bela', '12.0', 1, 1, '2024-10-05', '2023-04-12', 1, 1, 1),
+(13, 'Raf', 'Velik ljubitelj nogometa, ki nikoli ne spusti svoje žoge.', '3 leta', 'Samec', 'Črna z belo liso', '22.0', 1, 1, '2024-05-10', '2022-04-15', 1, 1, 1),
+(14, 'Tačko', 'Mlad raziskovalec, ki najraje počiva na toplem betonu.', '4 mesece', 'Samec', 'Tigrasto siv', '2.5', 0, 0, '2025-11-20', '2025-09-10', 2, 1, 1),
+(15, 'Nona', 'Starejša in mirna gospa, ki uživa v tišini in dobrem obroku.', '10 let', 'Samička', 'Tigrasta', '3.8', 1, 1, '2025-05-15', '2015-06-01', 2, 1, 1);
+
 INSERT INTO Fotografija (ID_fotografija, potDoDatoteke, TK_zival) VALUES
 (1, 'slike/Kimmy_1.jpg', 1),
 (2, 'slike/Nuage_1.jpg', 2),
@@ -191,13 +192,23 @@ INSERT INTO Fotografija (ID_fotografija, potDoDatoteke, TK_zival) VALUES
 (26, 'slike/Betty_1.jpg', 10),
 (27, 'slike/Bone_1.jpg', 11),
 (28, 'slike/Bone_2.jpg', 11),
-(29, 'slike/Luna_1.jpg', 12);
+(29, 'slike/Luna_1.jpg', 12),
+(30, 'slike/Raf_1.jpg', 13),
+(31, 'slike/Raf_2.jpg', 13),
+(32, 'slike/Raf_3.jpg', 13),
+(33, 'slike/Raf_4.jpg', 13),
+(34, 'slike/Tačko_1.jpg', 14),
+(35, 'slike/Tačko_2.jpg', 14),
+(36, 'slike/Tačko_3.jpg', 14),
+(37, 'slike/Tačko_4.jpg', 14),
+(38, 'slike/Tačko_5.jpg', 14),
+(39, 'slike/Nona_1.jpg', 15);
 
 INSERT INTO Uporabnik (ime, priimek, email, geslo, TK_tip_uporabnika) 
 VALUES (
     'Liza', 
     'Admin', 
     'info.sheltercompass@gmail.com', 
-    '$2y$12$khQ/bV2FteS6mSq.LBrAwOOiqbe6l7R4h.t82k8bRy0NNHd.Dy3sG', -- To je haširano 'admin123'
+    '$2y$12$khQ/bV2FteS6mSq.LBrAwOOiqbe6l7R4h.t82k8bRy0NNHd.Dy3sG',
     2
 );

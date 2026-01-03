@@ -241,26 +241,6 @@ try {
             
     <?php include 'footer.php';?>
 
-    <script>
-        // DARK MODE LOGIKA
-        const toggleButton = document.getElementById('darkModeToggle');
-        const body = document.body;
-        
-        if (localStorage.getItem('darkMode') === 'enabled') {
-            body.classList.add('dark-mode');
-            if(toggleButton) toggleButton.textContent = 'light_mode';
-        }
-
-        function toggleDarkMode() {
-            body.classList.toggle('dark-mode');
-            const mode = body.classList.contains('dark-mode') ? 'enabled' : 'disabled';
-            localStorage.setItem('darkMode', mode);
-            if(toggleButton) toggleButton.textContent = (mode === 'enabled') ? 'light_mode' : 'dark_mode';
-        }
-
-        if (toggleButton) {
-            toggleButton.addEventListener('click', toggleDarkMode);
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

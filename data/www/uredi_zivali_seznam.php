@@ -195,45 +195,7 @@ $statusi = $pdo->query("SELECT * FROM Status")->fetchAll();
             </form>
         </div>
     </div>
-
-    <script>
-        function openEditModal(zival) {
-            document.getElementById('edit_id').value = zival.ID_zival;
-            document.getElementById('edit_ime').value = zival.ime;
-            document.getElementById('modalTitle').innerText = "Urejanje: " + zival.ime;
-            document.getElementById('edit_opis').value = zival.opis;
-            document.getElementById('edit_starost').value = zival.starost;
-            document.getElementById('edit_teza').value = zival.teza;
-            document.getElementById('edit_vrsta').value = zival.TK_vrsta;
-            document.getElementById('edit_status').value = zival.TK_status;
-            document.getElementById('editModal').style.display = 'block';
-        }
-
-        function closeModal() {
-            document.getElementById('editModal').style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            if (event.target == document.getElementById('editModal')) closeModal();
-        }
-        // Ponoviva dark mode logiko, da bo delala tudi tukaj
-        const toggleButton = document.getElementById('darkModeToggle');
-        const body = document.body;
-        
-        function updateDarkMode() {
-            const isDark = body.classList.contains('dark-mode');
-            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
-            document.cookie = "darkMode=" + (isDark ? 'enabled' : 'disabled') + ";path=/";
-        }
-
-        if (toggleButton) {
-            toggleButton.addEventListener('click', () => {
-                body.classList.toggle('dark-mode');
-                updateDarkMode();
-            });
-        }
-    </script>
-
+    <script src="script.js"></script>
     <?php include 'footer.php'; ?>
 </body>
 </html>

@@ -9,6 +9,11 @@
     </head>
 <body>
 <header>
+    <script>
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+    }
+    </script>
     <div class="logo">
         <span class="material-icons" style="color: #27ae60;">favorite</span>
         <span class="logo-text">ShelterCompass</span>
@@ -22,4 +27,5 @@
     </div>
 </header>
 </body>
+
 </html>
