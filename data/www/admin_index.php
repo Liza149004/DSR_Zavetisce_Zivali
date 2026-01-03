@@ -70,7 +70,7 @@
 
             <main>
                 <section class="hero" style="padding: 40px 20px;">
-                    <h1>Pozdravljena, <?= htmlspecialchars($_SESSION['admin_ime']) ?>! 👋</h1>
+                    <h1>Pozdravljeni, <?= htmlspecialchars($_SESSION['admin_ime']) ?>! 👋</h1>
                 </section>
 
                 <section class="filters-container">
