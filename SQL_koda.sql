@@ -118,6 +118,7 @@ ALTER TABLE Povprasevanje ADD CONSTRAINT Povprasevanje_Zival FOREIGN KEY(TK_ziva
 ALTER TABLE Fotografija ADD CONSTRAINT Fotografija_Zival FOREIGN KEY(TK_zival) REFERENCES Zival(ID_zival);
 ALTER TABLE Porocilo ADD CONSTRAINT Porocilo_Uporabnik FOREIGN KEY(TK_uporabnik) REFERENCES Uporabnik(ID_uporabnik);
 ALTER TABLE Porocilo ADD CONSTRAINT Porocilo_Zavetisce FOREIGN KEY(TK_zavetisce) REFERENCES Zavetisce(ID_zavetisce);
+ALTER TABLE Uporabnik ADD COLUMN two_fa_secret VARCHAR(32) NULL;
 
 /*/////////////////////////////////////////////////////////////*/
 
@@ -149,17 +150,17 @@ INSERT INTO Status (vrstaStatusa) VALUES
 INSERT INTO Zival (ID_zival, ime, opis, starost, spol, barvaKozuha, teza, cepljen, sterilizacija, datumNajdbe, datumRojstva, TK_vrsta, TK_status, TK_zavetisce) VALUES
 (1, 'Kimmy', 'Najboljša mačka na svetu!', '12 let', 'Samička', 'Želvovinasta', '4,2', 1, 1, '2011-09-02', '2011-07-01', 2, 5, 1),
 (2, 'Nuage', 'Najboljši prijatelj objemom in spanju', '2 leti', 'Samec', 'Bel z lisami', '3,5', 0, 1, '2023-06-09', '2023-05-09', 2, 3, 1),
-(3, 'Orage', 'Ko pride zima se spremeni v debelo kepo puha', '2 leti', 'Samec', 'Pikčasto/tigrasto sivorjav', '3,8', 0, 1, '2023-06-09', '2023-05-09', 2, 3, 1),
+(3, 'Orage', 'Ko pride zima se spremeni v debelo kepo puha', '2 leti', 'Samec', 'Pikčasto/tigrasto sivo-rjav', '3,8', 0, 1, '2023-06-09', '2023-05-09', 2, 3, 1),
 (4, 'Garfield', 'Ta pravi', '3 leta', 'Samec', 'Tigrasto oranžen', '4,3', 0, 1, '2023-05-03', '2022-06-10', 2, 1, 1),
 (5, 'Blacky', 'Elegantna črna mačka, ki rada raziskuje okolico.', '1 leto', 'Samec', 'Črna', '4.5', 1, 1, '2024-02-10', '2021-05-15', 2, 1, 1),
-(6, 'Kara', 'Zelo fotogenična in mirna muca.', '3 leta', 'Samička', 'Tigrastosiva', '3.9', 1, 1, '2024-03-20', '2022-04-10', 2, 1, 1),
+(6, 'Kara', 'Zelo fotogenična in mirna muca.', '3 leta', 'Samička', 'Tigrasto siva', '3.9', 1, 1, '2024-03-20', '2022-04-10', 2, 1, 1),
 (7, 'Milo', 'Mlad in igriv maček, ki obožuje igračke.', '1 leto', 'Samec', 'Oranžno-bel', '3.2', 1, 0, '2025-01-05', '2024-05-20', 2, 1, 1),
 (8, 'Moustache', 'Gospod z rdečo pentljo in izjemnim karakterjem.', '3 leta', 'Samec', 'Tigrast', '4.8', 1, 1, '2023-11-12', '2020-08-01', 2, 1, 1),
-(9, 'Olaf', 'Zvest zlati prinašalec, ki se vedno smeji.', '10 let', 'Samec', 'Zlata', '28.0', 1, 1, '2024-06-15', '2022-12-01', 1, 1, 1),
+(9, 'Olaf', 'Zvest zlati prinašalec, ki se vedno smeji.', '10 let', 'Samec', 'Zlata', '28.0', 1, 1, '2024-06-15', '2016-12-01', 1, 1, 1),
 (10, 'Betty', 'Ljubka in radovedna. Alos, "dog"', '5 mesecev', 'Samička', 'Bela s črnimi lisami', '25.0', 1, 1, '2024-08-20', '2023-01-10', 3, 1, 1),
 (11, 'Bone', 'Majhen raziskovalec, ki je vedno poln energije.', '2 meseca', 'Samec', 'Rjavo-bel', '10.5', 1, 0, '2025-02-01', '2024-07-15', 1, 1, 1),
 (12, 'Luna', 'Nežna duša, ki išče miren dom.', '13 let', 'Samička', 'Črno-bela', '12.0', 1, 1, '2024-10-05', '2023-04-12', 1, 1, 1),
-(13, 'Raf', 'Velik ljubitelj nogometa, ki nikoli ne spusti svoje žoge.', '3 leta', 'Samec', 'Črna z belo liso', '22.0', 1, 1, '2024-05-10', '2022-04-15', 1, 1, 1),
+(13, 'Raf', 'Velik ljubitelj nogometa, ki nikoli ne spusti svoje žoge.', '11 leta', 'Samec', 'Črn z belo liso', '22.0', 1, 1, '2024-05-10', '2015-04-15', 1, 1, 1),
 (14, 'Tačko', 'Mlad raziskovalec, ki najraje počiva na toplem betonu.', '4 mesece', 'Samec', 'Tigrasto siv', '2.5', 0, 0, '2025-11-20', '2025-09-10', 2, 1, 1),
 (15, 'Nona', 'Starejša in mirna gospa, ki uživa v tišini in dobrem obroku.', '10 let', 'Samička', 'Tigrasta', '3.8', 1, 1, '2025-05-15', '2015-06-01', 2, 1, 1);
 

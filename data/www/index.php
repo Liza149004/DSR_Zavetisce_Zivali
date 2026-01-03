@@ -1,115 +1,10 @@
 <?php
 session_start();
-
-// Če je admin prijavljen in pride na glavno stran, ga odjavi
-if (isset($_SESSION['admin_id'])) {
-    session_unset();
-    session_destroy();
-    // Opcijsko: osvežimo stran, da se seja popolnoma izbriše iz brskalnika
-    header("Location: index.php");
-    exit();
-}
-// 1. POVEZAVA IN PRIDOBIVANJE PODATKOV ZA FILTRE
 require 'db_connect.php';
 
-$vrste_zivali = [];
-$statusi_zivali = [];
-$animal_count = 0;
-
-try {
-    // Pridobitev vrst za spustni seznam
-    $stmt_vrsta = $pdo->query("SELECT ID_vrsta, imeVrste FROM Vrsta");
-    $vrste_zivali = $stmt_vrsta->fetchAll();
-
-    // Pridobitev statusov za spustni seznam
-    $stmt_status = $pdo->query("SELECT ID_status, vrstaStatusa FROM Status ORDER BY vrstaStatusa");
-    $statusi_zivali = $stmt_status->fetchAll();
-} catch (PDOException $e) {
-    error_log("Napaka pri pridobivanju filtrov: " . $e->getMessage());
-}
-
-// 2. PRIDOBIVANJE PARAMETROV IZ URL (GET)
-$search_query = $_GET['search'] ?? '';
-$filter_vrsta = $_GET['vrsta'] ?? '';
-$filter_spol  = $_GET['spol'] ?? '';
-$filter_starost_rang = $_GET['starost_rang'] ?? '';
-$filter_status = $_GET['status'] ?? '';
-
-// 3. SESTAVLJANJE DINAMIČNE SQL POIZVEDBE
-$sql = "SELECT 
-            Z.ID_zival, 
-            Z.ime AS ime_zivali, 
-            Z.starost, 
-            Z.barvaKozuha,
-            V.imeVrste AS vrsta, 
-            S.vrstaStatusa AS status, 
-            MIN(F.potDoDatoteke) AS pot_do_slike
-        FROM Zival Z
-        LEFT JOIN Vrsta V ON Z.TK_vrsta = V.ID_vrsta
-        LEFT JOIN Status S ON Z.TK_status = S.ID_status
-        LEFT JOIN Fotografija F ON Z.ID_zival = F.TK_zival
-        WHERE 1=1"; 
-
-$params = [];
-
-// RAZŠIRJENO ISKANJE: Ime, Barva kožuha ali Ime vrste
-if (!empty($search_query)) {
-    $sql .= " AND (Z.ime LIKE ? OR Z.barvaKozuha LIKE ? OR V.imeVrste LIKE ?)";
-    $like_query = "%$search_query%";
-    $params[] = $like_query;
-    $params[] = $like_query;
-    $params[] = $like_query;
-}
-
-// FILTRIRANJE PO VRSTI, SPOLU IN STATUSU
-if (!empty($filter_vrsta)) {
-    $sql .= " AND Z.TK_vrsta = ?";
-    $params[] = $filter_vrsta;
-}
-if (!empty($filter_spol)) {
-    $sql .= " AND Z.spol = ?";
-    $params[] = $filter_spol;
-}
-if (!empty($filter_status)) {
-    $sql .= " AND Z.TK_status = ?";
-    $params[] = $filter_status;
-}
-
-// LOGIKA ZA STAROSTNE RAZPONE
-if (!empty($filter_starost_rang)) {
-    switch ($filter_starost_rang) {
-        case 'under1':
-            $sql .= " AND CAST(Z.starost AS UNSIGNED) < 1";
-            break;
-        case '1-2':
-            $sql .= " AND CAST(Z.starost AS UNSIGNED) BETWEEN 1 AND 2";
-            break;
-        case '2-3':
-            $sql .= " AND CAST(Z.starost AS UNSIGNED) BETWEEN 2 AND 3";
-            break;
-        case '3-6':
-            $sql .= " AND CAST(Z.starost AS UNSIGNED) BETWEEN 3 AND 6";
-            break;
-        case '6-10':
-            $sql .= " AND CAST(Z.starost AS UNSIGNED) BETWEEN 6 AND 10";
-            break;
-        case '10plus':
-            $sql .= " AND CAST(Z.starost AS UNSIGNED) > 10";
-            break;
-    }
-}
-
-$sql .= " GROUP BY Z.ID_zival, Z.ime, Z.starost, Z.barvaKozuha, V.imeVrste, S.vrstaStatusa
-          ORDER BY CASE WHEN S.vrstaStatusa = 'Aktiven' THEN 0 ELSE 1 END, Z.ime ASC";
-
-try {
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute($params);
-    $animals = $stmt->fetchAll();
-    $animal_count = count($animals);
-} catch (PDOException $e) {
-    $animals = [];
-}
+// Filtre za spustne sezname še vedno pripravimo s PHP-jem ob nalaganju strani
+$vrste_zivali = $pdo->query("SELECT ID_vrsta, imeVrste FROM Vrsta")->fetchAll();
+$statusi_zivali = $pdo->query("SELECT ID_status, vrstaStatusa FROM Status ORDER BY vrstaStatusa")->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -120,127 +15,202 @@ try {
     <title>ShelterCompass - Poišči Svojega Popolnega Spremljevalca</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
 
-    <?php include 'header.php';?>
+    <?php include 'header.php'; ?>
 
-    <main>
+    <main id="app">
         <section class="hero">
             <h1>Poišči svojega popolnega spremljevalca!</h1>
             <p class="tagline">Iščite po imenu, barvi kožuha ali vrsti živali.</p>
             
-            <form method="GET" action="" class="search-form">
+            <div class="search-form">
                 <div class="search-bar">
-                    <span type="submit" class="material-icons">search</span>
-                    <input type="text" name="search" placeholder="Npr. ime, barva kožuha ali vrsta..." value="<?= htmlspecialchars($search_query) ?>">
+                    <span class="material-icons">search</span>
+                    <input type="text" v-model="searchQuery" placeholder="Npr. ime, barva kožuha ali vrsta...">
                 </div>
+            </div>
         </section>
 
         <section class="filters-container">
             <div class="filters-header">
                 <span class="material-icons">tune</span>
                 <h3>Filtri</h3>
-                <?php if($search_query || $filter_vrsta || $filter_spol || $filter_starost_rang || $filter_status): ?>
-                    <a href="index.php" style="font-size: 0.8rem; margin-left: 15px; color: #ff6b6b;">Počisti vse</a>
-                <?php endif; ?>
+                <button @click="resetFilters" class="reset-btn" v-if="hasFilters" style="cursor: pointer; border: none; background: none; color: #ff6b6b; font-weight: bold;">
+                    Počisti vse
+                </button>
             </div>
             
             <div class="filters-grid">
                 <div class="filter-group">
                     <label>Vrsta</label>
-                    <select name="vrsta" onchange="this.form.submit()">
+                    <select v-model="filterVrsta">
                         <option value="">Vse vrste</option>
                         <?php foreach ($vrste_zivali as $v): ?>
-                            <option value="<?= $v['ID_vrsta'] ?>" <?= $filter_vrsta == $v['ID_vrsta'] ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($v['imeVrste']) ?>
-                            </option>
+                            <option value="<?= htmlspecialchars($v['imeVrste']) ?>"><?= htmlspecialchars($v['imeVrste']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
 
                 <div class="filter-group">
                     <label>Spol</label>
-                    <select name="spol" onchange="this.form.submit()">
+                    <select v-model="filterSpol">
                         <option value="">Vsi spoli</option>
-                        <option value="Samec" <?= $filter_spol == 'Samec' ? 'selected' : '' ?>>Samec</option>
-                        <option value="Samička" <?= $filter_spol == 'Samička' ? 'selected' : '' ?>>Samička</option>
+                        <option value="Samec">Samec</option>
+                        <option value="Samička">Samička</option>
                     </select>
                 </div>
 
                 <div class="filter-group">
                     <label>Starost</label>
-                    <select name="starost_rang" onchange="this.form.submit()">
+                    <select v-model="filterStarost">
                         <option value="">Vse starosti</option>
-                        <option value="under1" <?= $filter_starost_rang == 'under1' ? 'selected' : '' ?>>Pod 1 leto</option>
-                        <option value="1-2" <?= $filter_starost_rang == '1-2' ? 'selected' : '' ?>>1 - 2 leti</option>
-                        <option value="2-3" <?= $filter_starost_rang == '2-3' ? 'selected' : '' ?>>2 - 3 leta</option>
-                        <option value="3-6" <?= $filter_starost_rang == '3-6' ? 'selected' : '' ?>>3 - 6 let</option>
-                        <option value="6-10" <?= $filter_starost_rang == '6-10' ? 'selected' : '' ?>>6 - 10 let</option>
-                        <option value="10plus" <?= $filter_starost_rang == '10plus' ? 'selected' : '' ?>>Nad 10 let</option>
+                        <option value="under1">Pod 1 leto</option>
+                        <option value="1-2">1 - 2 leti</option>
+                        <option value="2-3">2 - 3 leta</option>
+                        <option value="3-6">3 - 6 let</option>
+                        <option value="6-10">6 - 10 let</option>
+                        <option value="10plus">Nad 10 let</option>
                     </select>
                 </div>
 
                 <div class="filter-group">
                     <label>Status</label>
-                    <select name="status" onchange="this.form.submit()">
+                    <select v-model="filterStatus">
                         <option value="">Vsi statusi</option>
                         <?php foreach ($statusi_zivali as $st): ?>
-                            <option value="<?= $st['ID_status'] ?>" <?= $filter_status == $st['ID_status'] ? 'selected' : '' ?>>
-                                <?= htmlspecialchars($st['vrstaStatusa']) ?>
-                            </option>
+                            <option value="<?= htmlspecialchars($st['vrstaStatusa']) ?>"><?= htmlspecialchars($st['vrstaStatusa']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
             </div>
-            </form>
 
-            <p class="showing-info">Prikazujem <?= $animal_count ?> živali</p>
+            <p class="showing-info">Prikazujem {{ filteredAnimals.length }} živali</p>
         </section>
             
-        <section class="animal-gallery">
-            <?php if ($animal_count > 0): ?>
-                <?php foreach ($animals as $animal): 
-                    $status = $animal['status'] ?? 'Neznano';
-                    $status_lower = mb_strtolower(trim($status), 'UTF-8');
-                    
-                    $status_class = 'in-care';
-                    $icon_emoji = 'ℹ️';
-
-                    if ($status_lower === 'aktiven') {
-                        $status_class = 'available'; $icon_emoji = '🐾';
-                    } elseif ($status_lower === 'posvojen') {
-                        $status_class = 'adopted'; $icon_emoji = '🏡';
-                    } elseif ($status_lower === 'rezerviran') {
-                        $status_class = 'reserved'; $icon_emoji = '🔒';
-                    } elseif ($status_lower === 'neaktiven') {
-                        $status_class = 'inactive'; $icon_emoji = '🚫';
-                    }
-                ?>
-                    <a href="profil_zivali.php?id=<?= $animal['ID_zival'] ?>" class="animal-card-link">
-                        <div class="animal-card">
-                            <div class="image-placeholder" style="background-image: url('<?= !empty($animal['pot_do_slike']) ? htmlspecialchars($animal['pot_do_slike']) : 'images/placeholder.jpg' ?>')">
-                                <span class="status-badge <?= $status_class ?>"><?= htmlspecialchars($status) ?></span>
-                            </div>
-                            <div class="card-details">
-                                <h4><?= htmlspecialchars($animal['ime_zivali']) ?></h4>
-                                <p><?= htmlspecialchars($animal['vrsta']) ?> • <?= htmlspecialchars($animal['barvaKozuha']) ?></p>
-                                <p class="meta">Starost: <?= htmlspecialchars($animal['starost']) ?></p>
-                                <span class="animal-icon"><?= $icon_emoji ?></span>
-                            </div>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <div class="no-results">
-                    <p>Žal ni zadetkov, ki bi ustrezali vašim kriterijem.</p>
+        <section class="animal-gallery" v-if="!loading">
+            <a v-for="animal in filteredAnimals" :key="animal.ID_zival" :href="'profil_zivali.php?id=' + animal.ID_zival" class="animal-card-link">
+                <div class="animal-card">
+                    <div class="image-placeholder" :style="{ backgroundImage: 'url(' + (animal.pot_do_slike || 'images/placeholder.jpg') + ')' }">
+                        <span :class="['status-badge', getStatusClass(animal.status)]">{{ animal.status || 'V oskrbi' }}</span>
+                    </div>
+                    <div class="card-details">
+                        <h4>{{ animal.ime_zivali }}</h4>
+                        <p>{{ animal.vrsta }} • {{ animal.barvaKozuha }}</p>
+                        <p class="meta">Starost: {{ animal.starost }} let</p>
+                        <span class="animal-icon">{{ getStatusIcon(animal.status) }}</span>
+                    </div>
                 </div>
-            <?php endif; ?>
+            </a>
+
+            <div v-if="filteredAnimals.length === 0" class="no-results" style="width: 100%; text-align: center; padding: 50px;">
+                <p>Žal ni zadetkov, ki bi ustrezali vašim kriterijem.</p>
+            </div>
         </section>
+
+        <div v-else style="text-align: center; padding: 50px;">
+            Nalaganje živali...
+        </div>
     </main>
             
-    <?php include 'footer.php';?>
+    <?php include 'footer.php'; ?>
 
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    animals: [],
+                    searchQuery: '',
+                    filterVrsta: '',
+                    filterSpol: '',
+                    filterStatus: '',
+                    filterStarost: '',
+                    loading: true
+                }
+            },
+            computed: {
+                hasFilters() {
+                    return this.searchQuery || this.filterVrsta || this.filterSpol || this.filterStatus || this.filterStarost;
+                },
+                filteredAnimals() {
+                    return this.animals.filter(animal => {
+                        // Iskanje po besedilu
+                        const s = this.searchQuery.toLowerCase();
+                        const matchesSearch = !s || 
+                                              animal.ime_zivali.toLowerCase().includes(s) || 
+                                              animal.barvaKozuha.toLowerCase().includes(s) || 
+                                              animal.vrsta.toLowerCase().includes(s);
+                        
+                        // Osnovni filtri
+                        const matchesVrsta = !this.filterVrsta || animal.vrsta === this.filterVrsta;
+                        const matchesSpol = !this.filterSpol || animal.spol === this.filterSpol;
+                        const matchesStatus = !this.filterStatus || animal.status === this.filterStatus;
+
+                        // Starostni rang
+                        let matchesStarost = true;
+                        if (this.filterStarost) {
+                            const age = parseFloat(animal.starost);
+                            switch (this.filterStarost) {
+                                case 'under1': matchesStarost = age < 1; break;
+                                case '1-2':    matchesStarost = age >= 1 && age <= 2; break;
+                                case '2-3':    matchesStarost = age > 2 && age <= 3; break;
+                                case '3-6':    matchesStarost = age > 3 && age <= 6; break;
+                                case '6-10':   matchesStarost = age > 6 && age <= 10; break;
+                                case '10plus': matchesStarost = age > 10; break;
+                            }
+                        }
+
+                        return matchesSearch && matchesVrsta && matchesSpol && matchesStatus && matchesStarost;
+                    });
+                }
+            },
+            methods: {
+                resetFilters() {
+                    this.searchQuery = '';
+                    this.filterVrsta = '';
+                    this.filterSpol = '';
+                    this.filterStatus = '';
+                    this.filterStarost = '';
+                },
+                getStatusClass(status) {
+                    if (!status) return 'in-care';
+                    const s = status.toLowerCase();
+                    if (s === 'aktiven') return 'available';
+                    if (s === 'posvojen') return 'adopted';
+                    if (s === 'rezerviran') return 'reserved';
+                    if (s === 'neaktiven') return 'inactive';
+                    return 'in-care';
+                },
+                getStatusIcon(status) {
+                    if (!status) return 'ℹ️';
+                    const s = status.toLowerCase();
+                    if (s === 'aktiven') return '🐾';
+                    if (s === 'posvojen') return '🏡';
+                    if (s === 'rezerviran') return '🔒';
+                    if (s === 'neaktiven') return '🚫';
+                    return 'ℹ️';
+                },
+                async fetchAnimals() {
+                    try {
+                        const response = await fetch('api_zivali.php');
+                        const data = await response.json();
+                        this.animals = data;
+                    } catch (error) {
+                        console.error("Napaka pri pridobivanju podatkov:", error);
+                    } finally {
+                        this.loading = false;
+                    }
+                }
+            },
+            mounted() {
+                this.fetchAnimals();
+            }
+        }).mount('#app');
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

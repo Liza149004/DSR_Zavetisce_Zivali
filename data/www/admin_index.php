@@ -5,7 +5,7 @@ header("Pragma: no-cache");
 header("Expires: 0");
 
 session_start();
-
+// Če v seji ni admin_id-ja, ga vrzi ven na prijavo
 if (!isset($_SESSION['admin_id'])) {
     header("Location: admin_login.php");
     exit();
@@ -184,10 +184,10 @@ $povp = $pdo->query($sql)->fetchAll();
             <nav class="admin-nav">
                 <a href="dodaj_zival.php"><span class="material-icons">add_circle</span> Dodaj žival</a>
                 <a href="uredi_zivali_seznam.php"><span class="material-icons">pets</span> Uredi živali</a>
-                <a href="index.php"><span class="material-icons">visibility</span> Ogled strani</a> 
+                <a href="logout.php?redirect=index.php"><span class="material-icons">visibility</span> Ogled strani</a> 
                 <a href="izvoz_pdf.php" class="admin-nav-item"><span class="material-icons">picture_as_pdf</span> PDF Poročilo</a>
                 <a href="izvoz_excel.php" class="admin-nav-item"><span class="material-icons">table_view</span> Excel Poročilo</a>
-                <a href="index.php" style="margin-left: auto; color: #ff6b6b;"><span class="material-icons">logout</span> Odjava</a>
+                <a href="logout.php?redirect=index.php" style="margin-left: auto; color: #ff6b6b;"><span class="material-icons">logout</span> Odjava</a>
             </nav>
             
             <div class="filters-header">

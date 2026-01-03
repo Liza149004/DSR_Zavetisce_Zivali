@@ -6,6 +6,7 @@
     <title>ShelterCompass - Poišči Svojega Popolnega Spremljevalca</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     </head>
 <body>
 <header>
