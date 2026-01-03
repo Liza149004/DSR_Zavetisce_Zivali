@@ -49,7 +49,7 @@
                     <span class="material-icons">arrow_back</span> Nazaj v nadzorno ploščo
                 </a>
 
-                <h2 style="margin-top:20px;">🐾 Upravljanje živali</h2>
+                <h2 style="margin-top:20px;">🐾 Seznam živali</h2>
 
                 <table>
                     <thead>
