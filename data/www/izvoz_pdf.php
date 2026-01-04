@@ -1,6 +1,6 @@
 <?php
-    error_reporting(0);
-    ini_set('display_errors', 0);
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
 
     require('tfpdf/tfpdf.php');
     require('db_connect.php');
@@ -64,10 +64,10 @@
     $fill = false;
 
     $sql_zivali = "SELECT z.ime, v.imeVrste, s.vrstaStatusa, z.starost 
-                FROM Zival Z
-                LEFT JOIN Vrsta V ON Z.TK_vrsta = V.ID_vrsta
-                LEFT JOIN Status S ON Z.TK_status = S.ID_status
-                ORDER BY Z.ime ASC";
+                FROM Zival z
+                LEFT JOIN Vrsta v ON z.TK_vrsta = v.ID_vrsta
+                LEFT JOIN Status s ON z.TK_status = s.ID_status
+                ORDER BY z.ime ASC";
     $zivali = $pdo->query($sql_zivali)->fetchAll();
 
     foreach ($zivali as $row) {
@@ -123,5 +123,5 @@
 
     if (ob_get_contents()) ob_end_clean();
     $pdf->Output('D', 'Porocilo_stanja.pdf');
-    exit();
+   exit();
 ?>

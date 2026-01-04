@@ -8,10 +8,10 @@
     if (!isset($_SESSION['admin_id'])) exit('Ni dostopa');
     //pridobivanje podatkov za živali
     $sql_zivali = "SELECT z.ime, v.imeVrste, s.vrstaStatusa, z.starost 
-                FROM Zival Z
-                LEFT JOIN Vrsta V ON Z.TK_vrsta = V.ID_vrsta
-                LEFT JOIN Status S ON Z.TK_status = S.ID_status
-                ORDER BY Z.ime ASC";
+                FROM Zival z
+                LEFT JOIN Vrsta v ON z.TK_vrsta = v.ID_vrsta
+                LEFT JOIN Status s ON z.TK_status = s.ID_status
+                ORDER BY z.ime ASC";
     $zivali = $pdo->query($sql_zivali)->fetchAll();
     //pridobivanje podatkov za povpraševanja
     $sql_povp = "SELECT u.ime, u.priimek, z.ime as zival_ime, p.datumOddaje, p.statusPovprasevanja 
